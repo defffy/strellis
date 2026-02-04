@@ -1,3 +1,39 @@
 .container {
+    --controls-height: 5vh;
+    --console-height: 10vh;
+    --editor-height: calc(100vh - var(--controls-height) - var(--console-height));
+    display: grid;
+    height: 100vh;
+    grid-template-rows: var(--controls-height) var(--editor-height) var(--console-height);
+}
+
+.container--hide-bottom{
+    --console-height: 0vh;
+
+    .container__bottom {
+        display: none;
+    }
+}
+
+.container--hide-sidebar {
+    ::slotted(strellis-sidebar) {
+        display: none;
+    }
+}
+
+.container--hide-top {
+    --controls-height: 0vh;
+}
+
+.container__top {
     background: red;
+}
+
+.container__editor {
+    background: blue;
+    display: flex;
+}
+
+.container__bottom {
+    background: green;
 }
