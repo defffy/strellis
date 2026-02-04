@@ -13,13 +13,14 @@ export class StrellisProvider extends LitElement {
   render() {
     return html`
       <div class="container">
-        <div class="container__top>
+        <div class="container__top">
           <slot name="controls"></slot>
         </div>
         <div class="container__editor">
           <slot name="sidebar"></slot>
+          <slot name="display-panel"></slot>
         </div>
-        <div class="container__bottom>
+        <div class="container__bottom">
           <slot name="console"></slot>
         </div>
       </div>
