@@ -2,18 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>editor</title>
+    <link rel="stylesheet" href="/src/styles.css" />
     <script type="module" src="/src/strellis-provider.ts"></script>
     <script type="module" src="/src/components/strellis-sidebar/strellis-sidebar.ts"></script>
     <script type="module" src="/src/components/strellis-controls/strellis-controls.ts"></script>
     <script type="module" src="/src/components/strellis-console/strellis-console.ts"></script>
+    <script type="module" src="/src/components/strellis-display-panel/strellis-display-panel.ts"></script>
   </head>
   <body>
     <strellis-provider>
       <strellis-controls slot="controls"></strellis-controls>
       <strellis-sidebar slot="sidebar"></strellis-sidebar>
+      <strellis-display-panel slot="display-panel"></strellis-display-panel>
       <strellis-console slot="console"></strellis-console>
     </strellis-provider>
   </body>
