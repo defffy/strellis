@@ -1,0 +1,8 @@
+{
+  "name": "strellis",
+  "private": true,
+  "workspaces": ["editor"],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
