@@ -1,0 +1,25 @@
+// Colors
+
+// Spacing
+// Padding
+$s-p-lg: 16px;
+$s-p-md: 12px;
+$s-p-sm: 8px;
+
+
+// Borders
+$border-radius-thick: 8px;
+$border-radius-medium: 6px;
+$border-radius-thin: 4px;
+
+$border-width-thick: 2px;
+$border-width-medium: 1.5px;
+$border-width-thin: 1px;
+
+$border-thick: $border-width-thick solid;
+$border-medium: $border-width-medium solid;
+$border-thin: $border-width-thin solid;
+
+// Fonts
+$font-family-primary: 'Inter', sans-serif;
+$font-family-secondary: 'Roboto Mono', monospace;
