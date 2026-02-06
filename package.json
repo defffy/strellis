@@ -3,6 +3,6 @@
   "private": true,
   "workspaces": ["editor"],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "editor:dev": "bun run --filter editor dev"
   }
 }
