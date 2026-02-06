@@ -7,12 +7,13 @@ import styles from './strellis-sidebar.scss?inline'
  */
 @customElement('strellis-sidebar')
 export class StrellisSidebar extends LitElement {
-
   static styles = unsafeCSS(styles);
 
   render() {
     return html`
-    <div>This is a sidebar</div>
+    <div class="sidebar">
+        sidebar
+    </div>
     `
   }
 }

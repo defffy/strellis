@@ -1,0 +1,8 @@
+@use "@sass/utils/breakpoints";
+@use "@sass/utils/type";
+@use "@sass/utils/tokens";
+
+.sidebar {
+    border-inline-end: tokens.$border-thick; 
+    padding-inline: tokens.$s-p-md;
+}
