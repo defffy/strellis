@@ -1,8 +1,11 @@
 {
   "name": "strellis",
   "private": true,
-  "workspaces": ["editor"],
+  "workspaces": [
+    "editor"
+  ],
   "scripts": {
-    "editor:dev": "bun run --filter editor dev"
+    "editor:dev": "bun run --filter editor dev",
+    "editor:add": "bun add --cwd editor"
   }
 }
