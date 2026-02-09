@@ -10,6 +10,24 @@ export class StrellisControls extends LitElement {
 
   static styles = unsafeCSS(styles);
 
+   connectedCallback() {
+      super.connectedCallback()
+      // Listen for key events to trigger run and stop actions
+      window.addEventListener('keydown', (e: KeyboardEvent) => {
+         // Ctrl+Enter to run code
+         if (e.ctrlKey && e.key === 'Enter') {
+            e.preventDefault()
+            this._handleRun()
+         }
+
+         // Ctrl+S to stop code
+         if (e.ctrlKey && e.key === 's') {
+            e.preventDefault()
+            this._handleStop()
+         }
+      })
+   }
+
   _handleRun() {
     const editors = document.querySelectorAll('strellis-editor')
     let entryPointHTML = ''
@@ -46,10 +64,15 @@ export class StrellisControls extends LitElement {
     this.dispatchEvent(new CustomEvent('run-code', { detail: { html: entryPointHTML }, bubbles: true, composed: true }))
   }
 
+   _handleStop() {
+      this.dispatchEvent(new CustomEvent('stop-code', {bubbles: true, composed: true }))
+   }
+
   render() {
     return html`
       <div class="container">
-         <button @click=${this._handleRun}>Run</button>
+         <button @click=${this._handleRun}>Run (CTRL + Enter)</button>
+      <button @click=${this._handleStop}>Stop (CTRL + s)</button>
       </div>
     `
   }
