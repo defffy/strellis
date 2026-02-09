@@ -85,8 +85,8 @@ export class StrellisEditor extends LitElement {
          inherit: true,   
          rules: [],
          colors: {
-            'editor.backgrou// nd': '#baaaaa20', 
-            'editor.lineHighligh// tBackground': '#ffffff20', 
+            'editor.background': '#baaaaa20', 
+            'editor.lineHighlightBackground': '#ffffff20', 
          }
       });
    }
@@ -142,9 +142,11 @@ export class StrellisEditor extends LitElement {
       if(hidden) {
          this.style.setProperty('z-index', '-1');
          this.style.setProperty('visibility', 'hidden');
+         this.style.setProperty('opacity', '0');
       } else {
          this.style.setProperty('z-index', '10');
          this.style.setProperty('visibility', 'visible');
+         this.style.setProperty('opacity', '1');
       }
    }
 
