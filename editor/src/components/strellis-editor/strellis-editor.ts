@@ -40,6 +40,9 @@ export class StrellisEditor extends LitElement {
    @property({ type: String, reflect: true })
    language: string = 'javascript'
 
+   @property({ type: String, reflect: true, attribute: 'default-value' })
+   defaultValue: string = ''
+
    @state()
    vimModeEnabled: boolean = true;
 
@@ -69,7 +72,7 @@ export class StrellisEditor extends LitElement {
 
    firstUpdated() {
       this.editor = monaco.editor.create(this.container, {
-         value: "// Start coding...",
+         value: this.defaultValue,
          language: this.language,
          theme: 'transparent-theme',
          automaticLayout: true,
