@@ -1,5 +1,5 @@
 import { LitElement, unsafeCSS, html } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import styles from './strellis-editor.scss?inline'
 import * as monaco from 'monaco-editor'
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
@@ -8,6 +8,8 @@ import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import monacoStyles from 'monaco-editor/min/vs/editor/editor.main.css?inline';
+import { initVimMode, type VimAdapterInstance } from "monaco-vim";
+
 
 self.MonacoEnvironment = {
    getWorker(_, label) {
@@ -26,27 +28,40 @@ self.MonacoEnvironment = {
 export class StrellisEditor extends LitElement {
    static styles = unsafeCSS(monacoStyles + styles);
 
-   @query('.container')
+   @query('.monaco-container')
    container!: HTMLDivElement
 
-   @property()
-   moncao: typeof monaco | null = null
+   @query('.vim-status-container')
+   vimStatusBar!: HTMLDivElement
 
+   @property()
+   editor!: monaco.editor.IStandaloneCodeEditor;
 
    @property({ type: String, reflect: true })
    language: string = 'javascript'
+
+   @state()
+   vimModeEnabled: boolean = true;
+
+   @state()
+   vimMode!: VimAdapterInstance;
 
 
    connectedCallback() {
       super.connectedCallback()
 
-      this.monaco.editor.defineTheme('transparent-theme', {
-         base: 'vs-dark', // or 'vs' for light mode
+      window.addEventListener('toggle-vim-mode', (e: Event) => {
+         this.vimModeEnabled = !this.vimModeEnabled;
+         this._setVimMode();
+      })
+
+      monaco.editor.defineTheme('transparent-theme', {
+         base: 'vs', // or 'vs' for light mode
          inherit: true,   // inherit existing syntax highlighting
          rules: [],
          colors: {
-            'editor.background': '#00000000', // Fully transparent
-            'editor.lineHighlightBackground': '#00000020', // Subtle highlight for the current line
+            'editor.background': '#baaaaa20', // Fully transparent
+            'editor.lineHighlightBackground': '#ffffff20', // Semi-transparent line highlight
          }
       });
 
@@ -60,11 +75,39 @@ export class StrellisEditor extends LitElement {
          automaticLayout: true,
          minimap: {
             enabled: false
-         }
+         },
+         glyphMargin: false,
+         lineNumbersMinChars: 2,
+         lineDecorationsWidth: 0,
+         fontSize: 14,
       })
 
+      monaco.editor.onDidChangeMarkers(([uri]) => {
+         const markers = monaco.editor.getModelMarkers({ resource: uri });
+         // Emit a custom event with the markers for this file
+
+         markers.forEach(m => {
+            this.dispatchEvent(new CustomEvent('update-console-message', {
+               detail: {
+                  severity: m.severity,
+                  startLine: m.startLineNumber,
+                  message: m.message,
+               }
+            }))
+         });
+      })
+
+      this._setVimMode();
    }
 
+   _setVimMode() {
+      if (this.vimModeEnabled) {
+         this.vimMode = initVimMode(this.editor, this.vimStatusBar);
+      } else if (!this.vimModeEnabled && this.vimMode) {
+         this.vimMode.dispose();
+         this.vimStatusBar.innerHTML = '';
+      }
+   }
 
    _handleInput(e: InputEvent) {
    }
@@ -72,8 +115,9 @@ export class StrellisEditor extends LitElement {
 
    render() {
       return html`
-      <div class="container">
+      <div class="monaco-container">
       </div>
+      <div class="vim-status-container"></div>
     `
    }
 }
