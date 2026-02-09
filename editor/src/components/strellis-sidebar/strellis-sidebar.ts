@@ -35,19 +35,13 @@ export class StrellisSidebar extends LitElement {
    * Handle click on a file in the sidebar. This should focus the corresponding editor and bring it to the front if it's not already focused.
    */
    _handleFileClick(filename: string) {
-      this.editors.forEach(editor => {
-         if (editor.getAttribute('filename') === filename) {
-            editor.setAttribute('selected', 'true')
-         } else {
-            editor.setAttribute('selected', 'false')
-         }
-      });
+      this.dispatchEvent(new CustomEvent('sidebar-file-selected', { detail: { filename }, bubbles: true, composed: true }))
    }
 
    /**
     * Create a new file and open it in a new editor. This should also update the sidebar to include the new file as well.
    */
-   _createFile(e) {
+   _createFile(e: Event) {
       e.preventDefault()
       // Close the new file modal
       this.openNewFileModal = false;
