@@ -1,51 +1,85 @@
- import { LitElement, unsafeCSS, html } from 'lit'
-import { customElement, query} from 'lit/decorators.js'
+import { LitElement, unsafeCSS, html } from 'lit'
+import { customElement, property, query } from 'lit/decorators.js'
 import styles from './strellis-editor.scss?inline'
+import * as monaco from 'monaco-editor'
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
+import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
+import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
+import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
+import monacoStyles from 'monaco-editor/min/vs/editor/editor.main.css?inline';
+
+self.MonacoEnvironment = {
+   getWorker(_, label) {
+      if (label === 'json') return new jsonWorker()
+      if (label === 'css' || label === 'scss' || label === 'less') return new cssWorker()
+      if (label === 'html' || label === 'handlebars' || label === 'razor') return new htmlWorker()
+      if (label === 'typescript' || label === 'javascript') return new tsWorker()
+      return new editorWorker()
+   }
+}
 
 /**
  * Text editor  
  */
 @customElement('strellis-editor')
 export class StrellisEditor extends LitElement {
+   static styles = unsafeCSS(monacoStyles + styles);
 
-  static styles = unsafeCSS(styles);
+   @query('.container')
+   container!: HTMLDivElement
 
-    @query('#output')
-    outputPreEl!: HTMLPreElement;
+   @property()
+   moncao: typeof monaco | null = null
 
-   @query('#output-code')
-   outputCodeEl!:  HTMLElement;
 
- _handleInput(e: InputEvent) {
-       let text = (e.target as HTMLTextAreaElement).value;
+   @property({ type: String, reflect: true })
+   language: string = 'javascript'
 
-      // Update the code block with the text from textarea
-      // Note: We handle the trailing newline for correct spacing
-      if(text[text.length-1] == "\n") {
-       text += " ";
-      }
 
-      this.outputCodeEl.innerText = text;
- }
+   connectedCallback() {
+      super.connectedCallback()
 
-   _handleScroll(){
-      // Sync the scroll position of the output with the textarea
-       this.outputPreEl.scrollTop = this.scrollTop; 
-       this.outputPreEl.scrollLeft = this.scrollLeft;
-    }
+      this.monaco.editor.defineTheme('transparent-theme', {
+         base: 'vs-dark', // or 'vs' for light mode
+         inherit: true,   // inherit existing syntax highlighting
+         rules: [],
+         colors: {
+            'editor.background': '#00000000', // Fully transparent
+            'editor.lineHighlightBackground': '#00000020', // Subtle highlight for the current line
+         }
+      });
 
-  render() {
-    return html`
+   }
+
+   firstUpdated() {
+      this.editor = monaco.editor.create(this.container, {
+         value: "// Start coding...",
+         language: this.language,
+         theme: 'transparent-theme',
+         automaticLayout: true,
+         minimap: {
+            enabled: false
+         }
+      })
+
+   }
+
+
+   _handleInput(e: InputEvent) {
+   }
+
+
+   render() {
+      return html`
       <div class="container">
-         <textarea id="editing" spellcheck="false" @input=${this._handleInput} @scroll=${this._handleScroll}></textarea>
-         <pre id="output" aria-hidden="true"><code id="output-code"></code></pre>
       </div>
     `
-  }
+   }
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'strellis-editor': StrellisEditor 
-  }
+   interface HTMLElementTagNameMap {
+      'strellis-editor': StrellisEditor
+   }
 }
