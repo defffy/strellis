@@ -32,6 +32,16 @@ export class StrellisDisplayPanel extends LitElement {
             iframe.srcdoc = this.srcDoc
          }
       })
+
+      // Listen for 'stop-code' event to clear the iframe content
+      window.addEventListener('stop-code', () => {
+         const iframe = this.shadowRoot?.getElementById('display') as HTMLIFrameElement
+
+         if (iframe) {
+            this.srcDoc = ''
+            iframe.srcdoc = this.srcDoc
+         }
+      })
    }
 
    render() {
