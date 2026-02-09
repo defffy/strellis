@@ -19,7 +19,9 @@ export class StrellisProvider extends LitElement {
         <div class="container__editor">
           <slot name="sidebar"></slot>
         <div class="container__display-wrapper">
-          <slot name="editor"></slot>
+         <div class="container__display-wrapper_editors">
+             <slot name="editor"></slot>
+         <div>
           <slot name="display-panel"></slot>
         </div>
         </div>
