@@ -1,6 +1,8 @@
 :host {
   --editor-width: 50%;
+  position: relative;
 }
+
 .monaco-container {
   display: block;
   height: 100%; 
@@ -8,6 +10,8 @@
 }
 
 .vim-status-container {
+  position: absolute;
+  bottom: 0;
     font-family: monospace;
     background-color: #00000080;
     color: #00ff00; /* Classic Vim Green */
