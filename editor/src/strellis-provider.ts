@@ -16,15 +16,18 @@ export class StrellisProvider extends LitElement {
         <div class="container__top">
           <slot name="controls"></slot>
         </div>
+
         <div class="container__editor">
           <slot name="sidebar"></slot>
-        <div class="container__display-wrapper">
-         <div class="container__display-wrapper_editors">
-             <slot name="editor"></slot>
-         <div>
-          <slot name="display-panel"></slot>
+
+          <div class="container__display-wrapper">
+            <div class="container__display-wrapper_editors">
+              <slot name="editor"></slot>
+            </div>
+            <slot name="display-panel"></slot>
+          </div>
         </div>
-        </div>
+
         <div class="container__bottom">
           <slot name="console"></slot>
         </div>
