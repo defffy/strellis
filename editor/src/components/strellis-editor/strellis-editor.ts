@@ -59,10 +59,21 @@ export class StrellisEditor extends LitElement {
 
       // Set initial selected state based on attribute
       if(this.getAttribute('selected') === 'true' || this.getAttribute('selected') === '') {
-         this.selected = true;
+         this._setHiddenStyles(false)
       } else {
-         this.selected = false;
+         this._setHiddenStyles(true)
       } 
+
+      window.addEventListener('sidebar-file-selected', (e: Event) => {
+         const customEvent = e as CustomEvent;
+         const filename = customEvent.detail.filename;
+
+         if(filename === this.getAttribute('filename')) {
+            this._setHiddenStyles(false)
+         } else {
+            this._setHiddenStyles(true)
+         }
+      })
 
       window.addEventListener('toggle-vim-mode', (e: Event) => {
          this.vimModeEnabled = !this.vimModeEnabled;
@@ -70,25 +81,17 @@ export class StrellisEditor extends LitElement {
       })
 
       monaco.editor.defineTheme('transparent-theme', {
-         base: 'vs', // or 'vs' for light mode
-         inherit: true,   // inherit existing syntax highlighting
+         base: 'vs', 
+         inherit: true,   
          rules: [],
          colors: {
-            'editor.background': '#baaaaa20', // Fully transparent
-            'editor.lineHighlightBackground': '#ffffff20', // Semi-transparent line highlight
+            'editor.backgrou// nd': '#baaaaa20', 
+            'editor.lineHighligh// tBackground': '#ffffff20', 
          }
       });
    }
 
-   attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null) {
-      super.attributeChangedCallback(name, oldValue, newValue)
 
-
-      if (name === 'selected' && newValue !== '') {
-         console.log('Selected attribute changed:', newValue);
-         this.selected = newValue === 'true';
-      }
-   }
 
    firstUpdated() {
       this.editor = monaco.editor.create(this.container, {
@@ -135,19 +138,25 @@ export class StrellisEditor extends LitElement {
    _handleInput(e: InputEvent) {
    }
 
+   _setHiddenStyles(hidden: boolean) {
+      if(hidden) {
+         this.style.setProperty('z-index', '-1');
+         this.style.setProperty('visibility', 'hidden');
+      } else {
+         this.style.setProperty('z-index', '10');
+         this.style.setProperty('visibility', 'visible');
+      }
+   }
+
+   public editorValue() {
+      return this.editor.getValue();
+   }
+
 
    render() {
       return html`
-      <div class=${classMap({
-         'monaco-container': true,
-         'hidden': !this.selected
-       })}>
-      </div>
-      <div class=${classMap({
-         'vim-status-container': true,
-         'hidden': !this.selected
-       })}>
-      </div>
+      <div class="monaco-container"></div>
+      <div class="vim-status-container"></div>
     `
    }
 }
