@@ -8,6 +8,7 @@
   height: 100%; 
   width: var(--editor-width);
   visibility: visible;
+  z-index: 10;
 }
 
 .vim-status-container {
@@ -24,6 +25,7 @@
     white-space: nowrap;
     z-index: 10;
     width: var(--editor-width);
+    z-index: 10;
   }
 
   /* These are the specific classes monaco-vim injects */
