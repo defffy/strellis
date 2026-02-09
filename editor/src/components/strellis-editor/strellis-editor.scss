@@ -37,3 +37,8 @@
     font-family: inherit;
     width: 100%;
   }
+
+.hidden {
+ visibility: hidden;
+  z-index: -1
+}

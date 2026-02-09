@@ -1,5 +1,6 @@
 import { LitElement, unsafeCSS, html } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
+import {classMap} from 'lit/directives/class-map.js'
 import styles from './strellis-editor.scss?inline'
 import * as monaco from 'monaco-editor'
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
@@ -28,12 +29,6 @@ self.MonacoEnvironment = {
 export class StrellisEditor extends LitElement {
    static styles = unsafeCSS(monacoStyles + styles);
 
-   @query('.monaco-container')
-   container!: HTMLDivElement
-
-   @query('.vim-status-container')
-   vimStatusBar!: HTMLDivElement
-
    @property()
    editor!: monaco.editor.IStandaloneCodeEditor;
 
@@ -42,6 +37,15 @@ export class StrellisEditor extends LitElement {
 
    @property({ type: String, reflect: true, attribute: 'default-value' })
    defaultValue: string = ''
+
+   @query('.monaco-container')
+   container!: HTMLDivElement
+
+   @property({ type: Boolean, reflect: true })
+   selected: boolean = false
+
+   @query('.vim-status-container')
+   vimStatusBar!: HTMLDivElement
 
    @state()
    vimModeEnabled: boolean = true;
@@ -52,6 +56,13 @@ export class StrellisEditor extends LitElement {
 
    connectedCallback() {
       super.connectedCallback()
+
+      // Set initial selected state based on attribute
+      if(this.getAttribute('selected') === 'true' || this.getAttribute('selected') === '') {
+         this.selected = true;
+      } else {
+         this.selected = false;
+      } 
 
       window.addEventListener('toggle-vim-mode', (e: Event) => {
          this.vimModeEnabled = !this.vimModeEnabled;
@@ -67,7 +78,16 @@ export class StrellisEditor extends LitElement {
             'editor.lineHighlightBackground': '#ffffff20', // Semi-transparent line highlight
          }
       });
+   }
 
+   attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null) {
+      super.attributeChangedCallback(name, oldValue, newValue)
+
+
+      if (name === 'selected' && newValue !== '') {
+         console.log('Selected attribute changed:', newValue);
+         this.selected = newValue === 'true';
+      }
    }
 
    firstUpdated() {
@@ -118,9 +138,16 @@ export class StrellisEditor extends LitElement {
 
    render() {
       return html`
-      <div class="monaco-container">
+      <div class=${classMap({
+         'monaco-container': true,
+         'hidden': !this.selected
+       })}>
       </div>
-      <div class="vim-status-container"></div>
+      <div class=${classMap({
+         'vim-status-container': true,
+         'hidden': !this.selected
+       })}>
+      </div>
     `
    }
 }
