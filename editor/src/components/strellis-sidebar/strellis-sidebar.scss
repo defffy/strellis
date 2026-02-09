@@ -3,6 +3,27 @@
 @use "@sass/utils/tokens";
 
 .sidebar {
-    border-inline-end: tokens.$border-thick; 
-    padding-inline: tokens.$s-p-md;
+  border-inline-end: tokens.$border-thick; 
+  padding-inline: tokens.$s-p-md;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$s-md; 
+}
+
+.sidebar__files {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar__files__file {
+  @include type.body-extra-small;
+  border: none;
+  background: transparent;
+  text-align: left;
+
+  &:hover,
+  &:focus {
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
 }
