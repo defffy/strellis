@@ -1,5 +1,5 @@
 import { LitElement, unsafeCSS, html } from 'lit'
-import { customElement} from 'lit/decorators.js'
+import { customElement } from 'lit/decorators.js'
 import styles from './strellis-display-panel.scss?inline'
 
 /**
@@ -8,19 +8,24 @@ import styles from './strellis-display-panel.scss?inline'
 @customElement('strellis-display-panel')
 export class StrellisDisplayPanel extends LitElement {
 
-  static styles = unsafeCSS(styles);
+   static styles = unsafeCSS(styles);
 
-  render() {
-    return html`
+   render() {
+      return html`
       <div class="container">
-      Display Panel
+         <iframe 
+         id="display"
+         srcdoc="..." 
+         allow="midi" 
+         sandbox="allow-scripts">
+         </iframe>
       </div>
     `
-  }
+   }
 }
 
 declare global {
-  interface HTMLElementTagNameMap {
-    'strellis-display-panel': StrellisDisplayPanel 
-  }
+   interface HTMLElementTagNameMap {
+      'strellis-display-panel': StrellisDisplayPanel
+   }
 }
