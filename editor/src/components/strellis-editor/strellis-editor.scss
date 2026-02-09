@@ -15,35 +15,30 @@
   visibility: visible;
   position: absolute;
   bottom: 0;
-    font-family: monospace;
-    background-color: #00000080;
-    color: #00ff00; /* Classic Vim Green */
-    border-top: 1px solid #444;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    white-space: nowrap;
-    z-index: 10;
-    width: var(--editor-width);
-    z-index: 10;
-  }
-
-  /* These are the specific classes monaco-vim injects */
-  .vim-statusbar {
-    padding: 0 5px;
-  }
-  
-  .vim-statusbar input {
-    background: transparent;
-    color: inherit;
-    border: none;
-    outline: none;
-    font-family: inherit;
-    width: 100%;
-  }
-
-.hidden {
- visibility: hidden;
-  z-index: -1;
-  opacity: 0;
+  font-family: monospace;
+  background-color: #00000080;
+  color: #00ff00; /* Classic Vim Green */
+  border-top: 1px solid #444;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  z-index: 10;
+  width: var(--editor-width);
+  z-index: 10;
 }
+
+/* These are the specific classes monaco-vim injects */
+.vim-statusbar {
+  padding: 0 5px;
+}
+
+.vim-statusbar input {
+  background: transparent;
+  color: inherit;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+}
+
