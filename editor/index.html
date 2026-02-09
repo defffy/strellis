@@ -16,19 +16,83 @@
     <strellis-provider>
       <strellis-controls slot="controls"></strellis-controls>
       <strellis-sidebar slot="sidebar"></strellis-sidebar>
-      <strellis-editor selected="true" filename="index.html" slot="editor" language="html" default-value="<!DOCTYPE html>
+      <strellis-display-panel slot="display-panel"></strellis-display-panel>
+      <strellis-editor selected="true" filename="sketch.js" slot="editor" language="javascript" default-value="function setup() {
+   createCanvas(400, 400);
+}
+
+function draw(){
+   background(220);
+   fill(255, 0, 0);
+   ellipse(mouseX, mouseY, 50, 50);
+}
+   "></strellis-editor>
+
+      <strellis-editor filename="index.html" slot="editor" language="html" default-value="<!DOCTYPE html>
 <html lang=&quot;en&quot;>
 <head>
     <meta charset=&quot;UTF-8&quot;>
     <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>
     <title>Strellis Editor</title>
+    <link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;>
+    <script src=&quot;https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.js&quot;></script>
 </head>
 <body>
     <h1>Hello, Strellis!</h1>
     <p>Start coding...</p>
+
+    <script src=&quot;sketch.js&quot;></script>
 </body>
 </html>"></strellis-editor>
-      <strellis-display-panel slot="display-panel"></strellis-display-panel>
+
+      <strellis-editor filename="styles.css" slot="editor" language="css" default-value="/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}"></strellis-editor>"
       <strellis-console slot="console"></strellis-console>
     </strellis-provider>
   </body>
