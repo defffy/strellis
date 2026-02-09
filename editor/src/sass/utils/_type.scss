@@ -101,6 +101,30 @@
   }
 }
 
+@mixin body-extra-small {
+  @include type(0.75rem, 1.5, 400);
+
+  @include breakpoints.tablet {
+    @include type(0.875rem, 1.5, 400);
+  }
+
+  @include breakpoints.desktop {
+    @include type(1rem, 1.5, 400);
+  }
+}
+
+@mixin body-small {
+  @include type(0.875rem, 1.5, 400);
+
+  @include breakpoints.tablet {
+    @include type(1rem, 1.5, 400);
+  }
+
+  @include breakpoints.desktop {
+    @include type(1.125rem, 1.5, 400);
+  }
+}
+
 @mixin body {
   @include type(1rem, 1.5, 400);
 
