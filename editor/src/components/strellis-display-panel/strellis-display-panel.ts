@@ -23,10 +23,13 @@ export class StrellisDisplayPanel extends LitElement {
          const iframe = this.shadowRoot?.getElementById('display') as HTMLIFrameElement
          const customEvent = event as CustomEvent
 
-         console.log(customEvent.detail)
-
          if (iframe) {
             this.srcDoc = customEvent.detail.html
+         }
+
+         // Update the iframe's srcdoc to trigger a re-render with the new content
+         if (iframe) {
+            iframe.srcdoc = this.srcDoc
          }
       })
    }
@@ -36,9 +39,9 @@ export class StrellisDisplayPanel extends LitElement {
       <div class="container">
          <iframe 
          id="display"
-         srcdoc=${this.srcDoc} 
+         frameborder="0"
          allow="midi; accelerometer; gyroscope; magnetometer" 
-         sandbox="allow-scripts">
+         sandbox="allow-scripts allow-modals allow-pointer-lock">
          </iframe>
       </div>
     `
