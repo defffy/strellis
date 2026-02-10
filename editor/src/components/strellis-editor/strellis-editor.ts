@@ -47,7 +47,7 @@ export class StrellisEditor extends LitElement {
    vimStatusBar!: HTMLDivElement
 
    @state()
-   vimModeEnabled: boolean = true;
+   vimModeEnabled: boolean = false;
 
    @state()
    vimMode!: VimAdapterInstance;
@@ -106,41 +106,45 @@ export class StrellisEditor extends LitElement {
          lineNumbersMinChars: 2,
          lineDecorationsWidth: 0,
          fontSize: 14,
-         renderLineHighlight: 'line',
-         scrollbar: {
-            vertical: 'hidden',
-            verticalScrollbarSize: 0,   // Ensures no width is reserved for it
-         },
+         // wordWrap: 'on',
+         // scrollbar: {
+         //    vertical: 'hidden',
+         //    verticalScrollbarSize: 0,   // Ensures no width is reserved for it
+         // },
       })
 
 
-      const highlightAllLines = () => {
-         const model = this.editor.getModel();
+//       const highlightAllLines = () => {
+//          const model = this.editor.getModel();
 
-         if (!model) return;
+//          if (!model) return;
 
-         const lineCount = model.getLineCount();
+//          const lineCount = model.getLineCount();
 
 
-         const newDecorations = [];
+//          const newDecorations = [];
 
-         for (let i = 1; i <= lineCount; i++) {
-            const maxColumn = model.getLineMaxColumn(i);
-            newDecorations.push({
-               range: new monaco.Range(i, 1, i, maxColumn),
-               options: {
-                  isWholeLine: false,
-                  className: 'line-highlight' 
-               }
-            });
-         }
+//          for (let i = 1; i <= lineCount; i++) {
+// const charCount = model.getLineContent(1).length;
+// const maxColumn = model.getLineMaxColumn(1);
 
-         // Apply the decorations (storing the IDs so we can clear them later)
-         this.editor.createDecorationsCollection(newDecorations);
-      }
+// console.log(charCount, maxColumn);
 
-      // Run it once on load
-      highlightAllLines();
+//             newDecorations.push({
+//                range: new monaco.Range(i, 1, i, maxColumn), // Highlight the entire line
+//                options: {
+//                   isWholeLine: false,
+//                   className: 'line-highlight' 
+//                }
+//             });
+//          }
+
+//          // Apply the decorations (storing the IDs so we can clear them later)
+//          this.editor.createDecorationsCollection(newDecorations);
+//       }
+
+//       // Run it once on load
+//       highlightAllLines();
 
       monaco.editor.onDidChangeMarkers(([uri]) => {
          const markers = monaco.editor.getModelMarkers({ resource: uri });
