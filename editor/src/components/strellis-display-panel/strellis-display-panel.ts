@@ -1,5 +1,5 @@
-import { LitElement, unsafeCSS, html } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { LitElement, unsafeCSS, html, type PropertyValues } from 'lit'
+import { customElement, property, query, queryAll, queryAssignedElements, queryAssignedNodes } from 'lit/decorators.js'
 import styles from './strellis-display-panel.scss?inline'
 
 /**
@@ -13,46 +13,45 @@ export class StrellisDisplayPanel extends LitElement {
    @property({ type: String, reflect: true })
    srcDoc!: string;
 
+   @property()
+   iframe!: HTMLIFrameElement;
 
+   @queryAssignedNodes({ slot: 'display' })
+   private displayElements!: HTMLElement[];
 
-   connectedCallback(): void {
-      super.connectedCallback()
-      
+   protected firstUpdated(_changedProperties: PropertyValues): void {
+      this.iframe = this.displayElements.find(el => el.tagName.toLowerCase() === 'iframe') as HTMLIFrameElement
+
+      if (this.iframe) {
+         this.srcDoc = ''
+         this.iframe.srcdoc = this.srcDoc
+      }
+
       // Listen for 'run-code' event to update the iframe content
       window.addEventListener('run-code', (event: Event) => {
-         const iframe = this.shadowRoot?.getElementById('display') as HTMLIFrameElement
          const customEvent = event as CustomEvent
 
-         if (iframe) {
-            this.srcDoc = customEvent.detail.html
-         }
-
          // Update the iframe's srcdoc to trigger a re-render with the new content
-         if (iframe) {
-            iframe.srcdoc = this.srcDoc
+         if (this.iframe) {
+            this.srcDoc = customEvent.detail.html
+            this.iframe.srcdoc = this.srcDoc
          }
       })
 
       // Listen for 'stop-code' event to clear the iframe content
       window.addEventListener('stop-code', () => {
-         const iframe = this.shadowRoot?.getElementById('display') as HTMLIFrameElement
-
-         if (iframe) {
+         if (this.iframe) {
             this.srcDoc = ''
-            iframe.srcdoc = this.srcDoc
+            this.iframe.srcdoc = this.srcDoc
          }
       })
+      
    }
 
    render() {
       return html`
       <div class="container">
-         <iframe 
-         id="display"
-         frameborder="0"
-         allow="midi; accelerometer; gyroscope; magnetometer" 
-         sandbox="allow-scripts allow-modals allow-pointer-lock">
-         </iframe>
+         <slot name="display"></slot>
       </div>
     `
    }
