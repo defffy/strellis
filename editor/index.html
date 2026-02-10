@@ -44,16 +44,16 @@ note(&quot;C3 E3 G3&quot;).s(&quot;sine&quot;)
     </strellis-editor>
 
     <strellis-editor selected="true" filename="sketch.js" slot="editor" language="javascript" default-value="// Listen for messages from the Strudel instance 
-      let strudelData = {};
+let strudelData = {};
 
-    window.addEventListener(&quot;message&quot;, (event) => {
-      if (event.data.type === &quot;STRUDEL_EVENT&quot;) {
-        strudelData = event.data.val; // Store the received data for use in the sketch
-      }
+window.addEventListener(&quot;message&quot;, (event) => {
+  if (event.data.type === &quot;STRUDEL_EVENT&quot;) {
+    strudelData = event.data.val; // Store the received data for use in the sketch
+  }
 
-    });
+});
 
-      function setup() {
+function setup() {
    createCanvas(windowWidth, windowHeight);
 }
 
