@@ -1,10 +1,15 @@
+@use "@sass/utils/tokens";
+
 .container {
     --controls-height: 5vh;
     --console-height: 10vh;
-    --editor-height: calc(100vh - var(--controls-height) - var(--console-height));
+    // --editor-height: calc(100vh - var(--controls-height) - var(--console-height));
+    --editor-height: calc(100vh - var(--controls-height));
     display: grid;
     height: 100vh;
-    grid-template-rows: var(--controls-height) var(--editor-height) var(--console-height);
+    // grid-template-rows: var(--controls-height) var(--editor-height) var(--console-height);
+    grid-template-rows: var(--controls-height) var(--editor-height); 
+    gap: tokens.$s-md;
 }
 
 .container--hide-bottom{

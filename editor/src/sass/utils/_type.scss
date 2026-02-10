@@ -18,133 +18,144 @@
 } 
 
 @mixin h1 {
-  @include type-heading(2.5rem, 1.2, 700, -0.02em);
+  --annotation: "h1";
+  @include type-heading(24px, 1.2, 700, -0.02em);
 
   @include breakpoints.tablet {
-    @include type-heading(3rem, 1.2, 700, -0.02em);
+    @include type-heading(32px, 1.2, 700, -0.02em);
   }
 
   @include breakpoints.desktop {
-    @include type-heading(3.5rem, 1.2, 700, -0.02em);
+    @include type-heading(40px, 1.2, 700, -0.02em);
   }
 }
 
 @mixin h2 {
-  @include type-heading(2rem, 1.3, 600, -0.01em);
+  --annotation: "h2";
+  @include type-heading(20px, 1.3, 600, -0.01em);
 
   @include breakpoints.tablet {
-    @include type-heading(2.5rem, 1.3, 600, -0.01em);
+    @include type-heading(28px, 1.3, 600, -0.01em);
   }
 
   @include breakpoints.desktop {
-    @include type-heading(3rem, 1.3, 600, -0.01em);
+    @include type-heading(36px, 1.3, 600, -0.01em);
   }
 }
 
 @mixin h3 {
-  @include type-heading(1.5rem, 1.4, 500);
+  --annotation: "h3";
+  @include type-heading(16px, 1.4, 500);
 
   @include breakpoints.tablet {
-    @include type-heading(2rem, 1.4, 500);
+    @include type-heading(24px, 1.4, 500);
   }
 
   @include breakpoints.desktop {
-    @include type-heading(2.5rem, 1.4, 500);
+    @include type-heading(32px, 1.4, 500);
   }
 }
 
 @mixin h4 {
-  @include type-heading(1.25rem, 1.5, 500);
+  --annotation: "h4";
+  @include type-heading(14px, 1.5, 500);
 
   @include breakpoints.tablet {
-    @include type-heading(1.75rem, 1.5, 5j00);
+    @include type-heading(20px, 1.5, 500);
   }
 
   @include breakpoints.desktop {
-    @include type-heading(2rem, 1.5, 500);
+    @include type-heading(28px, 1.5, 500);
   }
 }
 
 @mixin subheading-small {
-  @include type(1rem, 1.5, 500);
+  --annotation: "subheading-small";
+  @include type(12px, 1.5, 500);
 
   @include breakpoints.tablet {
-    @include type(1.125rem, 1.5, 500);
+    @include type(14px, 1.5, 500);
   }
 
   @include breakpoints.desktop {
-    @include type(1.25rem, 1.5, 500);
+    @include type(14px, 1.5, 500);
   }
 }
 
 @mixin subheading-medium {
-  @include type(1.125rem, 1.5, 500);
+  --annotation: "subheading-medium";
+  @include type(14px, 1.5, 500);
 
   @include breakpoints.tablet {
-    @include type(1.25rem, 1.5, 500);
+    @include type(16px, 1.5, 500);
   }
 
   @include breakpoints.desktop {
-    @include type(1.375rem, 1.5, 500);
+    @include type(18px, 1.5, 500);
   }
 }
 
 @mixin subheading-large {
-  @include type(1.125rem, 1.5, 500);
+  --annotation: "subheading-large";
+  @include type(16px, 1.5, 500);
 
   @include breakpoints.tablet {
-    @include type(1.25rem, 1.5, 500);
+    @include type(18px, 1.5, 500);
   }
 
   @include breakpoints.desktop {
-    @include type(1.5rem, 1.5, 500);
+    @include type(20px, 1.5, 500);
   }
 }
 
 @mixin body-extra-small {
-  @include type(0.75rem, 1.5, 400);
+  --annotation: "body-extra-small";
+  @include type(10px, 1.5, 400);
 
   @include breakpoints.tablet {
-    @include type(0.875rem, 1.5, 400);
+    @include type(10px, 1.5, 400);
   }
 
   @include breakpoints.desktop {
-    @include type(1rem, 1.5, 400);
+    @include type(12px, 1.5, 400);
   }
 }
 
 @mixin body-small {
-  @include type(0.875rem, 1.5, 400);
+  --annotation: "body-small";
+  @include type(12px, 1.5, 400);
 
   @include breakpoints.tablet {
-    @include type(1rem, 1.5, 400);
+    @include type(14px, 1.5, 400);
   }
 
   @include breakpoints.desktop {
-    @include type(1.125rem, 1.5, 400);
+    @include type(16px, 1.5, 400);
   }
 }
 
 @mixin body {
-  @include type(1rem, 1.5, 400);
+  --annotation: "body";
+  @include type(14px, 1.5, 400);
 
   @include breakpoints.tablet {
-    @include type(1.125rem, 1.5, 400);
+    @include type(16px, 1.5, 400);
   }
 
   @include breakpoints.desktop {
-    @include type(1.25rem, 1.5, 400);
+    @include type(18px, 1.5, 400);
   }
 }
 
 @mixin body-large {
-  @include type(1.125rem, 1.5, 400);
+  --annotation: "body-large";
+  @include type(16px, 1.5, 400);
 
   @include breakpoints.tablet {
-    @include type(1.25rem, 1.5, 400);
+    @include type(18px, 1.5, 400);
   }
 
   @include breakpoints.desktop {
-    @include type(1.375rem, 1.5, 400);
+    @include type(20px, 1.5, 400);
   }
 }
