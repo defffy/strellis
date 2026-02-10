@@ -10,6 +10,20 @@
   gap: tokens.$s-md; 
 }
 
+.sidebar__controls__new-file {
+  position: relative;
+  margin-top: tokens.$s-md;
+}
+
+
+.sidebar__controls__new-file__form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  button { width: fit-content;}
+}
+
 .sidebar__files {
   display: flex;
   flex-direction: column;
