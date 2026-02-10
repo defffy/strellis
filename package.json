@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "editor:dev": "bun run --filter editor dev",
+    "editor:build": "bun run --filter editor build",
     "editor:add": "bun add --cwd editor"
   }
 }
