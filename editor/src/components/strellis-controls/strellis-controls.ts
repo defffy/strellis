@@ -13,14 +13,14 @@ export class StrellisControls extends LitElement {
 
   private strudelInitialized = false;
 
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback()
     // Listen for key events to trigger run and stop actions
-    window.addEventListener('keydown', (e: KeyboardEvent) => {
+    window.addEventListener('keydown', async (e: KeyboardEvent) => {
       // Ctrl+Enter to run code
       if (e.ctrlKey && e.key === 'Enter') {
         e.preventDefault()
-        this._handleRun()
+        await this._handleRun()
       }
 
       // Ctrl+S to stop code
@@ -31,7 +31,7 @@ export class StrellisControls extends LitElement {
     })
   }
 
-  _handleRun() {
+  async _handleRun() {
     this._handleStop() // Stop any running code before starting new execution
 
     const editors = document.querySelectorAll('strellis-editor')
@@ -52,7 +52,7 @@ export class StrellisControls extends LitElement {
       const language = strellisEditor.getAttribute('language')
 
       if (filename === 'strudel.js') {
-        this._handleExecuteStrudelCode();
+        await this._handleExecuteStrudelCode();
         continue;
       }
 
@@ -94,6 +94,10 @@ export class StrellisControls extends LitElement {
     if (!this.strudelInitialized) {
       try {
         await initStrudel();
+        
+        // Wait for Strudel globals to be available
+        await this._waitForStrudelGlobals();
+        
         this.strudelInitialized = true;
         console.log('Strudel initialized successfully');
       } catch (error) {
@@ -113,6 +117,24 @@ export class StrellisControls extends LitElement {
         console.error('Strudel execution error:', error);
       }
     }
+  }
+
+  private async _waitForStrudelGlobals() {
+    // Wait for Strudel globals to be available
+    let attempts = 0;
+    const maxAttempts = 50; // 5 seconds max
+    
+    while (attempts < maxAttempts) {
+      if (typeof (window as any).note !== 'undefined') {
+        console.log('Strudel globals are ready');
+        return;
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+      attempts++;
+    }
+    
+    throw new Error('Strudel globals not available after initialization');
   }
 
   render() {
