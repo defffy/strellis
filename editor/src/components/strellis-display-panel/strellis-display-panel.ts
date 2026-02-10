@@ -1,5 +1,5 @@
 import { LitElement, unsafeCSS, html, type PropertyValues } from 'lit'
-import { customElement, property, query, queryAll, queryAssignedElements, queryAssignedNodes } from 'lit/decorators.js'
+import { customElement, property, queryAssignedNodes } from 'lit/decorators.js'
 import styles from './strellis-display-panel.scss?inline'
 
 /**
@@ -45,7 +45,7 @@ export class StrellisDisplayPanel extends LitElement {
             this.iframe.srcdoc = this.srcDoc
          }
       })
-      
+
    }
 
    render() {

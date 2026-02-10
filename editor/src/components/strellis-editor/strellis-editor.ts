@@ -1,6 +1,5 @@
 import { LitElement, unsafeCSS, html } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
-import {classMap} from 'lit/directives/class-map.js'
 import styles from './strellis-editor.scss?inline'
 import * as monaco from 'monaco-editor'
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
@@ -75,7 +74,7 @@ export class StrellisEditor extends LitElement {
          }
       })
 
-      window.addEventListener('toggle-vim-mode', (e: Event) => {
+      window.addEventListener('toggle-vim-mode', () => {
          this.vimModeEnabled = !this.vimModeEnabled;
          this._setVimMode();
       })
@@ -133,9 +132,6 @@ export class StrellisEditor extends LitElement {
          this.vimMode.dispose();
          this.vimStatusBar.innerHTML = '';
       }
-   }
-
-   _handleInput(e: InputEvent) {
    }
 
    _setHiddenStyles(hidden: boolean) {

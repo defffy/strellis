@@ -41,12 +41,12 @@ export class StrellisSidebar extends LitElement {
    /**
     * Create a new file and open it in a new editor. This should also update the sidebar to include the new file as well.
    */
-   _createFile(e: Event) {
+   _createFile(e: SubmitEvent) {
       e.preventDefault()
       // Close the new file modal
       this.openNewFileModal = false;
 
-      const formData = new FormData(e.target)
+      const formData = new FormData(e.target as HTMLFormElement)
 
       const fileNameData = formData.get('filename') as string
 
