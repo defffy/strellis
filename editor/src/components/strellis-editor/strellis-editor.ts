@@ -57,17 +57,17 @@ export class StrellisEditor extends LitElement {
       super.connectedCallback()
 
       // Set initial selected state based on attribute
-      if(this.getAttribute('selected') === 'true' || this.getAttribute('selected') === '') {
+      if (this.getAttribute('selected') === 'true' || this.getAttribute('selected') === '') {
          this._setHiddenStyles(false)
       } else {
          this._setHiddenStyles(true)
-      } 
+      }
 
       window.addEventListener('sidebar-file-selected', (e: Event) => {
          const customEvent = e as CustomEvent;
          const filename = customEvent.detail.filename;
 
-         if(filename === this.getAttribute('filename')) {
+         if (filename === this.getAttribute('filename')) {
             this._setHiddenStyles(false)
          } else {
             this._setHiddenStyles(true)
@@ -80,12 +80,13 @@ export class StrellisEditor extends LitElement {
       })
 
       monaco.editor.defineTheme('transparent-theme', {
-         base: 'vs', 
-         inherit: true,   
+         base: 'vs',
+         inherit: true,
          rules: [],
          colors: {
-            'editor.background': '#baaaaa20', 
-            'editor.lineHighlightBackground': '#ffffff20', 
+            'editor.background': '#baaaaa00',
+            'editor.lineHighlightBackground': '#21212160',
+            "editorLineNumber.foreground": '#000000',
          }
       });
    }
@@ -105,7 +106,41 @@ export class StrellisEditor extends LitElement {
          lineNumbersMinChars: 2,
          lineDecorationsWidth: 0,
          fontSize: 14,
+         renderLineHighlight: 'line',
+         scrollbar: {
+            vertical: 'hidden',
+            verticalScrollbarSize: 0,   // Ensures no width is reserved for it
+         },
       })
+
+
+      const highlightAllLines = () => {
+         const model = this.editor.getModel();
+
+         if (!model) return;
+
+         const lineCount = model.getLineCount();
+
+
+         const newDecorations = [];
+
+         for (let i = 1; i <= lineCount; i++) {
+            const maxColumn = model.getLineMaxColumn(i);
+            newDecorations.push({
+               range: new monaco.Range(i, 1, i, maxColumn),
+               options: {
+                  isWholeLine: false,
+                  className: 'line-highlight' 
+               }
+            });
+         }
+
+         // Apply the decorations (storing the IDs so we can clear them later)
+         this.editor.createDecorationsCollection(newDecorations);
+      }
+
+      // Run it once on load
+      highlightAllLines();
 
       monaco.editor.onDidChangeMarkers(([uri]) => {
          const markers = monaco.editor.getModelMarkers({ resource: uri });
@@ -135,7 +170,7 @@ export class StrellisEditor extends LitElement {
    }
 
    _setHiddenStyles(hidden: boolean) {
-      if(hidden) {
+      if (hidden) {
          this.style.setProperty('z-index', '-1');
          this.style.setProperty('visibility', 'hidden');
          this.style.setProperty('opacity', '0');
