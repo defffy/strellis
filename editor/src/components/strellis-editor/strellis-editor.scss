@@ -43,6 +43,7 @@
 }
 
 .line-highlight {
-  background: rgba(255, 255, 224, 0.9);
+  // Darker yellow with some transparency for better visibility
+  background: rgba(255, 255, 0); 
   z-index: -1;
 }
