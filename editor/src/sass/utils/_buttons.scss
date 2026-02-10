@@ -1,0 +1,23 @@
+@use '@sass/utils/tokens';
+@use '@sass/utils/type';
+
+@mixin button {
+  @include type.subheading-small;
+  padding: tokens.$s-p-sm tokens.$s-p-lg; 
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: tokens.$border-radius-thin;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: tokens.$color-bg-hover; 
+    color: tokens.$color-text-light;
+  }
+}
+
+@mixin button-small {
+  @include button;
+  @include type.body-extra-small;
+}
