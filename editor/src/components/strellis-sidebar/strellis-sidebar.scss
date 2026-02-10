@@ -1,4 +1,5 @@
 @use "@sass/utils/breakpoints";
+@use "@sass/utils/buttons";
 @use "@sass/utils/type";
 @use "@sass/utils/tokens";
 
@@ -8,6 +9,12 @@
   display: flex;
   flex-direction: column;
   gap: tokens.$s-md; 
+}
+
+.sidebar__controls__button,
+.sidebar__controls__new-file__form button{
+  @include buttons.button-small;
+
 }
 
 .sidebar__controls__new-file {
@@ -20,8 +27,18 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  gap: tokens.$s-sm;
 
-  button { width: fit-content;}
+  input {
+    border-radius: tokens.$border-radius-thin;
+    border: 1px solid tokens.$color-border-dark;
+    padding: tokens.$s-p-xs;
+     @include type.body-extra-small;
+  }
+
+  button { 
+    width: fit-content;
+  }
 }
 
 .sidebar__files {
@@ -30,7 +47,7 @@
 }
 
 .sidebar__files__file {
-  @include type.body-extra-small;
+  @include type.body-small;
   border: none;
   background: transparent;
   text-align: left;
