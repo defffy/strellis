@@ -1,0 +1,11 @@
+@use "@sass/utils/buttons";
+@use "@sass/utils/tokens";
+
+.container {
+  width: calc(100% - 2rem);
+  margin: tokens.$s-p-md auto; 
+}
+
+button {
+  @include buttons.button;
+}
