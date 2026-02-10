@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
-  base: 'strellis',
+  base: '/strellis/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
