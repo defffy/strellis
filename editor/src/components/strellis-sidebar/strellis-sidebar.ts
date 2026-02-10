@@ -43,8 +43,6 @@ export class StrellisSidebar extends LitElement {
    */
    _createFile(e: SubmitEvent) {
       e.preventDefault()
-      // Close the new file modal
-      this.openNewFileModal = false;
 
       const formData = new FormData(e.target as HTMLFormElement)
 
@@ -77,19 +75,26 @@ export class StrellisSidebar extends LitElement {
       // Ensure the created file is focused
       this._handleFileClick(`${fileName}.${extension}`);
 
+      // Close the new file modal
+      this.openNewFileModal = false;
    }
 
    render() {
       return html`
-       <div class="sidebar">
+       <div class="sidebar" @keydown=${(e: KeyboardEvent) => {
+         if (e.key === 'Escape') {
+            this.openNewFileModal = false;
+         }}}>
          <div class="sidebar__controls">
             <button class="sidebar__controls__button" @click=${() => this.openNewFileModal = true}>New File</button>  
-            ${this.openNewFileModal ? html`
-               <form @submit=${this._createFile}>
-                  <input name="filename" type="text" placeholder="Enter file name" required />
-                  <button type="submit">Create file</button>
-               </form>
-            ` : nothing} 
+            <div class="sidebar__controls__new-file">
+               ${this.openNewFileModal ? html`
+                  <form @submit=${this._createFile} class="sidebar__controls__new-file__form">
+                     <input name="filename" type="text" placeholder="Enter file name" required />
+                     <button type="submit">Create file</button>
+                  </form>
+               ` : nothing} 
+            </div>
          </div>
          <div class="sidebar__files">
             ${this.files?.map(file => html`
