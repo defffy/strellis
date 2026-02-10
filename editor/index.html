@@ -1,38 +1,88 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>editor</title>
-    <link rel="stylesheet" href="/src/styles.css" />
-    <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
-    <script type="module" src="/src/strellis-provider.ts"></script>
-    <script type="module" src="/src/components/strellis-sidebar/strellis-sidebar.ts"></script>
-    <script type="module" src="/src/components/strellis-controls/strellis-controls.ts"></script>
-    <script type="module" src="/src/components/strellis-console/strellis-console.ts"></script>
-    <script type="module" src="/src/components/strellis-display-panel/strellis-display-panel.ts"></script>
-    <script type="module" src="/src/components/strellis-editor/strellis-editor.ts"></script>
-  </head>
-  <body>
-    <strellis-provider>
-      <strellis-controls slot="controls"></strellis-controls>
-      <strellis-sidebar slot="sidebar"></strellis-sidebar>
-      <strellis-display-panel slot="display-panel"></strellis-display-panel>
-      <strellis-editor filename="strudel.js" slot="editor" language="javascript"  default-value="note(&quot;<c a f e>(3,8)&quot;).jux(rev).play();"></strellis-editor>
 
-      <strellis-editor selected="true" filename="sketch.js" slot="editor" language="javascript" default-value="function setup() {
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>editor</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+  <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
+  <script type="module" src="/src/strellis-provider.ts"></script>
+  <script type="module" src="/src/components/strellis-sidebar/strellis-sidebar.ts"></script>
+  <script type="module" src="/src/components/strellis-controls/strellis-controls.ts"></script>
+  <script type="module" src="/src/components/strellis-console/strellis-console.ts"></script>
+  <script type="module" src="/src/components/strellis-display-panel/strellis-display-panel.ts"></script>
+  <script type="module" src="/src/components/strellis-editor/strellis-editor.ts"></script>
+</head>
+
+<body>
+  <strellis-provider>
+    <strellis-controls slot="controls"></strellis-controls>
+    <strellis-sidebar slot="sidebar"></strellis-sidebar>
+    <strellis-display-panel slot="display-panel">
+      <iframe slot="display" frameborder="0" allow="midi; accelerometer; gyroscope; magnetometer"
+        sandbox="allow-scripts allow-modals allow-pointer-lock">
+      </iframe>
+    </strellis-display-panel>
+    <strellis-editor filename="strudel.js" slot="editor" language="javascript" default-value="
+// Send to iframe context
+const sendToIframe = (event) => {
+  const iframe = document.querySelector(&quot;iframe&quot;);
+
+  if(iframe) {
+    iframe.contentWindow.postMessage({type: 'STRUDEL_EVENT', val: event}, &quot;*&quot;);
+  }
+};
+
+// Use it in your pattern chain
+note(&quot;C3 E3 G3&quot;).s(&quot;sine&quot;)
+  .fmap((event) => {
+    sendToIframe(event); // Send message as side effect
+    return event; // Return event unchanged for audio to continue
+  })
+  .play();">
+    </strellis-editor>
+
+    <strellis-editor selected="true" filename="sketch.js" slot="editor" language="javascript" default-value="// Listen for messages from the Strudel instance 
+      let strudelData = {};
+
+    window.addEventListener(&quot;message&quot;, (event) => {
+      if (event.data.type === &quot;STRUDEL_EVENT&quot;) {
+        strudelData = event.data.val; // Store the received data for use in the sketch
+      }
+
+    });
+
+      function setup() {
    createCanvas(windowWidth, windowHeight);
 }
 
 function draw(){
-   background('#f1f1f1');
-   fill(255, 0, 0);
+  console.log(strudelData); // Log the received data to verify it's working
+   background(&quot;orange&quot;);
+   fill(getFillFromNote(strudelData.note));
+    const scale = getScaleFromNote(strudelData.note);
+    
    const n = noise(frameCount * 0.01);
-   ellipse(windowWidth * n, windowHeight * n, 50, 50);
+   ellipse(windowWidth * n, windowHeight * n, 50 * scale, 50 * scale);
+}
+
+function getScaleFromNote(note) {
+  if(note === &quot;C3&quot;) return 1;
+  if(note === &quot;G3&quot;) return 2;
+  if(note === &quot;E3&quot;) return 0.5;
+   return 1;
+}
+
+function getFillFromNote(note) {
+  if(note === &quot;C3&quot;) return color(255, 0, 0);
+  if(note === &quot;G3&quot;) return color(0, 255, 0);
+  if(note === &quot;E3&quot;) return color(0, 0, 255);
+   return color(255);
 }
    "></strellis-editor>
 
-         <strellis-editor filename="index.html" slot="editor" language="html" default-value="<!DOCTYPE html>
+    <strellis-editor filename="index.html" slot="editor" language="html" default-value="<!DOCTYPE html>
 <html lang=&quot;en&quot;>
 <head>
     <meta charset=&quot;UTF-8&quot;>
@@ -47,7 +97,7 @@ function draw(){
 </body>
 </html>"></strellis-editor>
 
-      <strellis-editor filename="styles.css" slot="editor" language="css" default-value="/* http://meyerweb.com/eric/tools/css/reset/ 
+    <strellis-editor filename="styles.css" slot="editor" language="css" default-value="/* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -95,7 +145,8 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }"></strellis-editor>"
-      <strellis-console slot="console"></strellis-console>
-    </strellis-provider>
-  </body>
+    <strellis-console slot="console"></strellis-console>
+  </strellis-provider>
+</body>
+
 </html>
