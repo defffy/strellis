@@ -28,10 +28,12 @@ export class StrellisProvider extends LitElement {
           </div>
         </div>
 
+        <!--
         <div class="container__bottom">
           <slot name="console"></slot>
         </div>
       </div>
+      -->
     `
   }
 }
