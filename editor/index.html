@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>editor</title>
     <link rel="stylesheet" href="/src/styles.css" />
+    <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
     <script type="module" src="/src/strellis-provider.ts"></script>
     <script type="module" src="/src/components/strellis-sidebar/strellis-sidebar.ts"></script>
     <script type="module" src="/src/components/strellis-controls/strellis-controls.ts"></script>
@@ -17,6 +18,8 @@
       <strellis-controls slot="controls"></strellis-controls>
       <strellis-sidebar slot="sidebar"></strellis-sidebar>
       <strellis-display-panel slot="display-panel"></strellis-display-panel>
+      <strellis-editor filename="strudel.js" slot="editor" language="javascript"  default-value="note(&quot;<c a f e>(3,8)&quot;).jux(rev).play();"></strellis-editor>
+
       <strellis-editor selected="true" filename="sketch.js" slot="editor" language="javascript" default-value="function setup() {
    createCanvas(windowWidth, windowHeight);
 }
@@ -29,7 +32,7 @@ function draw(){
 }
    "></strellis-editor>
 
-      <strellis-editor filename="index.html" slot="editor" language="html" default-value="<!DOCTYPE html>
+         <strellis-editor filename="index.html" slot="editor" language="html" default-value="<!DOCTYPE html>
 <html lang=&quot;en&quot;>
 <head>
     <meta charset=&quot;UTF-8&quot;>
@@ -37,6 +40,7 @@ function draw(){
     <title>Strellis Editor</title>
     <link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;>
     <script src=&quot;https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.js&quot; crossorigin=&quot;&quot;></script>
+    <script src=&quot;https://unpkg.com/@strudel/web@1.0.3&quot;></script>
     <script src=&quot;sketch.js&quot;></script>
 </head>
 <body>
