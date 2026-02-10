@@ -7,6 +7,7 @@
   "scripts": {
     "editor:dev": "bun run --filter editor dev",
     "editor:build": "bun run --filter editor build",
+    "editor:preview": "bun run --filter editor preview",
     "editor:add": "bun add --cwd editor"
   }
 }
