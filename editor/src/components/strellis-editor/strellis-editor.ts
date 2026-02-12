@@ -103,7 +103,7 @@ export class StrellisEditor extends LitElement {
          minimap: {
             enabled: false
          },
-         glyphMargin: false,
+         glyphMargin: true,
          lineNumbersMinChars: 2,
          lineDecorationsWidth: 0,
          fontSize: 14,
