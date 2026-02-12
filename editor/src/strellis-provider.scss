@@ -3,12 +3,10 @@
 .container {
     --controls-height: 5vh;
     --console-height: 10vh;
-    // --editor-height: calc(100vh - var(--controls-height) - var(--console-height));
-    --editor-height: calc(100vh - var(--controls-height));
+    --editor-height: calc(100vh - var(--controls-height) - var(--console-height));
     display: grid;
     height: 100vh;
-    // grid-template-rows: var(--controls-height) var(--editor-height) var(--console-height);
-    grid-template-rows: var(--controls-height) var(--editor-height); 
+    grid-template-rows: var(--controls-height) var(--editor-height) var(--console-height);
     gap: tokens.$s-md;
 }
 
