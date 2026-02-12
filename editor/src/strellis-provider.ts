@@ -1,5 +1,6 @@
 import { LitElement, unsafeCSS, html } from 'lit'
-import { customElement} from 'lit/decorators.js'
+import { customElement, state} from 'lit/decorators.js'
+import { classMap } from 'lit/directives/class-map.js';
 import styles from './strellis-provider.scss?inline'
 
 /**
@@ -10,9 +11,21 @@ export class StrellisProvider extends LitElement {
 
   static styles = unsafeCSS(styles);
 
+  @state()
+  sidebarVisible = false;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    
+    // Listen for custom events to toggle sidebar visibility
+    this.addEventListener('toggle-sidebar', () => {
+      this.sidebarVisible = !this.sidebarVisible;
+    });
+  }
+
   render() {
     return html`
-      <div class="container">
+      <div class=${classMap({ container: true, 'container--hide-sidebar': !this.sidebarVisible })}>
         <div class="container__top">
           <slot name="controls"></slot>
         </div>
