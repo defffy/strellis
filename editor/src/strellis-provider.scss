@@ -10,14 +10,6 @@
     gap: tokens.$s-md;
 }
 
-.container--hide-bottom{
-    --console-height: 0vh;
-
-    .container__bottom {
-        display: none;
-    }
-}
-
 .container--hide-sidebar {
     --container-editor-columns: 1fr;
     ::slotted(strellis-sidebar) {
@@ -50,5 +42,3 @@
     grid-template-columns: var(--container-editor-columns, auto 1fr);
 }
 
-.container__bottom {
-}
