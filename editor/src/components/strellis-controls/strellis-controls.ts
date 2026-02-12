@@ -16,6 +16,9 @@ export class StrellisControls extends LitElement {
   @state()
   vimModeEnabled = false;
 
+  @state()
+  sidebarEnabled = false;
+
   async connectedCallback() {
     super.connectedCallback()
     // Listen for key events to trigger run and stop actions
@@ -35,6 +38,11 @@ export class StrellisControls extends LitElement {
       if(e.ctrlKey && e.key === 'V') {
         e.preventDefault()
         this._handleToggleVim()
+      }
+
+      if(e.ctrlKey && e.key === 'B') {
+        e.preventDefault()
+        this._handleToggleSidebar()
       }
     })
   }
@@ -151,11 +159,18 @@ export class StrellisControls extends LitElement {
       this.dispatchEvent(toggleVimModeEvent);
    }
 
+   _handleToggleSidebar() {
+      const toggleSidebarEvent = new CustomEvent('toggle-sidebar', { bubbles: true, composed: true });
+      this.sidebarEnabled = !this.sidebarEnabled;
+      this.dispatchEvent(toggleSidebarEvent);
+   }
+
   render() {
     return html`
       <div class="container">
          <button @click=${this._handleRun}>Run (CTRL + Enter)</button>
          <button @click=${this._handleStop}>Stop (CTRL + s)</button>
+         <button @click=${this._handleToggleSidebar}>${this.sidebarEnabled ? 'Hide' : 'Show'} sidebar (CTRL + SHIFT + b)</button>
          <button @click=${this._handleToggleVim}>${this.vimModeEnabled ? 'Disable' : 'Enable'} Vim Mode (CTRL + SHIFT + v)</button>
       </div>
     `
