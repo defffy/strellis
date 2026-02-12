@@ -1,5 +1,5 @@
 import { LitElement, unsafeCSS, html } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, state } from 'lit/decorators.js'
 import styles from './strellis-controls.scss?inline'
 import type { StrellisEditor } from '../strellis-editor/strellis-editor';
 
@@ -12,6 +12,9 @@ export class StrellisControls extends LitElement {
   static styles = unsafeCSS(styles);
 
   private strudelInitialized = false;
+
+  @state()
+  vimModeEnabled = false;
 
   async connectedCallback() {
     super.connectedCallback()
@@ -27,6 +30,11 @@ export class StrellisControls extends LitElement {
       if (e.ctrlKey && e.key === 's') {
         e.preventDefault()
         this._handleStop()
+      }
+
+      if(e.ctrlKey && e.key === 'V') {
+        e.preventDefault()
+        this._handleToggleVim()
       }
     })
   }
@@ -137,11 +145,18 @@ export class StrellisControls extends LitElement {
     throw new Error('Strudel globals not available after initialization');
   }
 
+   _handleToggleVim() {
+      const toggleVimModeEvent = new CustomEvent('toggle-vim-mode', { bubbles: true, composed: true });
+      this.vimModeEnabled = !this.vimModeEnabled;
+      this.dispatchEvent(toggleVimModeEvent);
+   }
+
   render() {
     return html`
       <div class="container">
          <button @click=${this._handleRun}>Run (CTRL + Enter)</button>
-      <button @click=${this._handleStop}>Stop (CTRL + s)</button>
+         <button @click=${this._handleStop}>Stop (CTRL + s)</button>
+         <button @click=${this._handleToggleVim}>${this.vimModeEnabled ? 'Disable' : 'Enable'} Vim Mode (CTRL + SHIFT + v)</button>
       </div>
     `
   }
