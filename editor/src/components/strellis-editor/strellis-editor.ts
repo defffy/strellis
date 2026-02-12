@@ -47,7 +47,7 @@ export class StrellisEditor extends LitElement {
    vimStatusBar!: HTMLDivElement
 
    @state()
-   vimModeEnabled: boolean = true;
+   vimModeEnabled: boolean = false;
 
    @state()
    vimMode!: VimAdapterInstance;
@@ -63,6 +63,12 @@ export class StrellisEditor extends LitElement {
          this._setHiddenStyles(true)
       }
 
+      window.addEventListener('toggle-vim-mode', () => {
+         this.vimModeEnabled = !this.vimModeEnabled;
+         this._setVimMode();
+         console.log(`Vim mode ${this.vimModeEnabled ? 'enabled' : 'disabled'}`);
+      })
+
       window.addEventListener('sidebar-file-selected', (e: Event) => {
          const customEvent = e as CustomEvent;
          const filename = customEvent.detail.filename;
@@ -72,11 +78,6 @@ export class StrellisEditor extends LitElement {
          } else {
             this._setHiddenStyles(true)
          }
-      })
-
-      window.addEventListener('toggle-vim-mode', () => {
-         this.vimModeEnabled = !this.vimModeEnabled;
-         this._setVimMode();
       })
 
       monaco.editor.defineTheme('transparent-theme', {
