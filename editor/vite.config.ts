@@ -8,6 +8,12 @@ export default defineConfig({
   base: '/strellis/',
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+        p5: path.resolve(__dirname, 'p5.html')
+      }
+    }
   },
   resolve: {
     alias: {
