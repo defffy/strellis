@@ -10,5 +10,7 @@
 .console__log-entry {
   @include type.body-small;
   white-space: pre-wrap;
-  color: tokens.$color-text-light;
+  background: tokens.$color-highlighted;
+  width: fit-content;
+  padding-inline: tokens.$s-p-xs;
 }
