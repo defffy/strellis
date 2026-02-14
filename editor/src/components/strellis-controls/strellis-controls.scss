@@ -17,16 +17,20 @@ button {
   position: relative;
 }
 
-.template-selector-container__options {
-  position: absolute;
-  top: calc(100% + tokens.$s-p-sm);
-  width: 100%;
-  z-index: 100;
-  display: flex;
+
+.template-selector-container__modal {
   border: 1px solid tokens.$color-border-dark;
   border-radius: tokens.$border-radius-thin;
-  padding: tokens.$s-p-md;
-  margin: 0;
+  padding: tokens.$s-p-lg;
+    width: clamp(90%, 50vw, 400px);
+
+  h3 {
+    @include type.subheading-medium;
+    margin-bottom: tokens.$s-p-md;
+  }
+
+}
+.template-selector-container__modal__options {
   display: flex;
   flex-direction: column;
 

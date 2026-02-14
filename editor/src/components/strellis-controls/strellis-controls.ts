@@ -190,11 +190,14 @@ export class StrellisControls extends LitElement {
          <button @click=${this._handleToggleSidebar}>${this.sidebarEnabled ? 'Hide' : 'Show'} sidebar (CTRL + SHIFT + b)</button>
          <button @click=${this._handleToggleVim}>${this.vimModeEnabled ? 'Disable' : 'Enable'} Vim Mode (CTRL + SHIFT + v)</button>
          <div class="template-selector-container">
-            <button popovertarget="select-template">Select Template</Button>
-            <div id="select-template" class="template-selector-container__options"  popover>
-            ${TEMPLATE_OPTIONS.map(option => html`<a href="/strellis${option.href}">${option.name}</a`)}
-            <div>
-         <div>
+            <button popovertarget="select-template">Select Template</button>
+            <div id="select-template" class="template-selector-container__modal" popover>
+               <h3>Choose a template:</h3>
+               <div class="template-selector-container__modal__options">
+                  ${TEMPLATE_OPTIONS.map(option => html`<a href="/strellis${option.href}">${option.name}</a>`)}
+               </div>
+            </div>
+         </div>
       </div>
     `
    }
