@@ -1,0 +1,14 @@
+@use '@sass/utils/tokens';
+@use '@sass/utils/type';
+
+
+.container {
+  overflow-y: auto; 
+  height: 300px;
+}
+
+.console__log-entry {
+  @include type.body-small;
+  white-space: pre-wrap;
+  color: tokens.$color-text-light;
+}
