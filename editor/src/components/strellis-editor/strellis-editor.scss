@@ -16,6 +16,8 @@
   visibility: visible;
   position: absolute;
   bottom: 0;
+  // Offset with the glyph margin of the Monaco editor
+  left: 21px;
   font-family: monospace;
   background-color: #00000080;
   color: #00ff00; /* Classic Vim Green */
@@ -26,7 +28,6 @@
   white-space: nowrap;
   z-index: 10;
   width: var(--editor-width);
-  z-index: 10;
 }
 
 /* These are the specific classes monaco-vim injects */
