@@ -1,11 +1,46 @@
 @use "@sass/utils/buttons";
 @use "@sass/utils/tokens";
+@use "@sass/utils/type";
 
 .container {
   width: calc(100% - 2rem);
   margin: tokens.$s-p-md auto; 
+  display: flex;
+  gap: tokens.$s-p-md;
 }
 
 button {
   @include buttons.button;
 }
+
+.template-selector-container {
+  position: relative;
+}
+
+.template-selector-container__options {
+  position: absolute;
+  top: calc(100% + tokens.$s-p-sm);
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  border: 1px solid tokens.$color-border-dark;
+  border-radius: tokens.$border-radius-thin;
+  padding: tokens.$s-p-md;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+
+  a {
+    @include type.body-small;
+    display: block;
+    text-decoration: none;
+    padding: tokens.$s-p-xs;
+
+    &:hover {
+      background: tokens.$color-bg-hover;
+      color: tokens.$color-text-light;
+    }
+  }
+}
+
+
