@@ -1,3 +1,5 @@
+@use '@sass/utils/tokens';
+
 :host {
   --editor-width: 50%;
   position: relative;
@@ -46,6 +48,6 @@
 
 .line-highlight {
   // Darker yellow with some transparency for better visibility
-  background: rgba(255, 255, 0); 
+  background: tokens.$color-highlighted; 
   z-index: -1;
 }
