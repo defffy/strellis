@@ -33,6 +33,7 @@
     &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
     &lt;title&gt;Strellis Editor&lt;/title&gt;
     &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.js&quot; crossorigin=&quot;&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;https://unpkg.com/@strudel/web@1.0.3&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;sketch.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
@@ -119,8 +120,33 @@ window.addEventListener(&quot;message&quot;, (event) =&gt; {
 
 });
 
-// Any visualization code can go here, using the strudelData object to access the received data
+function setup() {
+   createCanvas(windowWidth, windowHeight);
+}
 
+function draw(){
+  console.log(strudelData); // Log the received data to verify it&#39;s working
+   background(&quot;blue&quot;);
+   fill(getFillFromNote(strudelData.note));
+    const scale = getScaleFromNote(strudelData.note);
+    
+   const n = noise(frameCount * 0.01);
+   ellipse(windowWidth * n, windowHeight * n, 50 * scale, 50 * scale);
+}
+
+function getScaleFromNote(note) {
+  if(note === &quot;C3&quot;) return 1;
+  if(note === &quot;G3&quot;) return 2;
+  if(note === &quot;E3&quot;) return 0.5;
+   return 1;
+}
+
+function getFillFromNote(note) {
+  if(note === &quot;C3&quot;) return color(255, 0, 0);
+  if(note === &quot;G3&quot;) return color(0, 255, 0);
+  if(note === &quot;E3&quot;) return color(0, 0, 255);
+   return color(255);
+}
 "></strellis-editor>
     
 
