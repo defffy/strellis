@@ -18,12 +18,9 @@ export class StrellisConsole extends LitElement {
       window.addEventListener('message', (event: MessageEvent) => {
          const isAtBottom = this.container.scrollHeight - this.container.clientHeight <= this.container.scrollTop + 5;
 
-
          const {data} = event
 
          if(data.type !== 'SANDBOX_LOG') return;
-
-         const message = JSON.stringify(data.content)
 
          // Create a new log entry element and append it to the console
          const logEntry = document.createElement('div')
