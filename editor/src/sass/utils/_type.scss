@@ -6,6 +6,7 @@
   font-size: $size;
   line-height: $line-height;
   font-weight: $weight;
+  font-family: tokens.$font-family-secondary;
 
   @if $letter-spacing {
     letter-spacing: $letter-spacing;
