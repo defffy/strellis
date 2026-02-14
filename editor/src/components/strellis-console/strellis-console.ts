@@ -13,7 +13,6 @@ export class StrellisConsole extends LitElement {
   render() {
     return html`
       <div class="container">
-      Console
       </div>
     `
   }
