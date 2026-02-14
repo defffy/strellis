@@ -33,7 +33,7 @@ export class StrellisDisplayPanel extends LitElement {
 
          // Update the iframe's srcdoc to trigger a re-render with the new content
          if (this.iframe) {
-            this.srcDoc = customEvent.detail.html
+            this.srcDoc =  this._generateIframeSrcDoc(customEvent.detail.html);
             this.iframe.srcdoc = this.srcDoc
          }
       })
@@ -47,6 +47,47 @@ export class StrellisDisplayPanel extends LitElement {
       })
 
    }
+
+   private _generateIframeSrcDoc(html: string) {
+      // Add this string at the end of the body tag in the provided HTML to capture console logs
+      const logCaptureScript = `<script>
+  (function() {
+    const methods = ['log', 'debug', 'info', 'warn', 'error'];
+    methods.forEach(method => {
+      const original = console[method];
+      console[method] = function(...args) {
+        // Send to parent via postMessage
+        window.parent.postMessage({
+          type: 'SANDBOX_LOG',
+          level: method,
+          content: args.map(arg => {
+             try { 
+               return typeof arg === 'object' ? JSON.stringify(arg) : String(arg); 
+             } catch(e) { return "[Unserializable Object]"; }
+          })
+        }, '*'); // '*' is required because the sandbox origin is 'null'
+        
+        original.apply(console, args);
+      };
+    });
+
+    // Also catch global errors
+    window.onerror = (msg, url, line, col) => {
+      window.parent.postMessage({ type: 'SANDBOX_ERROR', msg, line, col }, '*');
+    };
+  })();
+</script>`
+
+         return html.replace('</body>', `${logCaptureScript}</body>`)
+
+   }
+
+   private _emitIframeLogs() {
+      this.iframe.contentWindow?.addEventListener('console', (event: any) => {
+         const logEvent = new CustomEvent('iframe-log', { detail: { message: event.message } })
+         window.dispatchEvent(logEvent)
+      })
+   } 
 
    render() {
       return html`
