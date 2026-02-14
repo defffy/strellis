@@ -82,13 +82,6 @@ export class StrellisDisplayPanel extends LitElement {
 
    }
 
-   private _emitIframeLogs() {
-      this.iframe.contentWindow?.addEventListener('console', (event: any) => {
-         const logEvent = new CustomEvent('iframe-log', { detail: { message: event.message } })
-         window.dispatchEvent(logEvent)
-      })
-   } 
-
    render() {
       return html`
       <div class="container">
