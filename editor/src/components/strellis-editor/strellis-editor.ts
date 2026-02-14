@@ -108,6 +108,10 @@ export class StrellisEditor extends LitElement {
          lineDecorationsWidth: 0,
          fontSize: 14,
          renderLineHighlight: 'line',
+         padding: {
+            top: 30,
+            bottom: 0
+         },
          scrollbar: {
             vertical: 'hidden',
             verticalScrollbarSize: 0,   // Ensures no width is reserved for it
