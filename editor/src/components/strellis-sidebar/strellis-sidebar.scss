@@ -4,12 +4,13 @@
 @use "@sass/utils/tokens";
 
 .sidebar {
-  border-inline-end: tokens.$border-thick; 
+  border-inline-end: 1px solid tokens.$color-border-dark; 
   padding-inline: tokens.$s-p-md;
   display: flex;
   flex-direction: column;
   gap: tokens.$s-md; 
-  height: 100%;
+  height: calc(100% - tokens.$s-p-lg);
+  margin-top: tokens.$s-p-lg;
 }
 
 .sidebar__controls__button,
