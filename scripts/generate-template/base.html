@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>editor</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+  <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
+  <script type="module" src="/src/strellis-provider.ts"></script>
+  <script type="module" src="/src/components/strellis-sidebar/strellis-sidebar.ts"></script>
+  <script type="module" src="/src/components/strellis-controls/strellis-controls.ts"></script>
+  <script type="module" src="/src/components/strellis-console/strellis-console.ts"></script>
+  <script type="module" src="/src/components/strellis-display-panel/strellis-display-panel.ts"></script>
+  <script type="module" src="/src/components/strellis-editor/strellis-editor.ts"></script>
+</head>
+
+<body>
+  <strellis-provider>
+    <strellis-controls slot="controls"></strellis-controls>
+    <strellis-sidebar slot="sidebar"></strellis-sidebar>
+    <strellis-display-panel slot="display-panel">
+      <iframe slot="display" frameborder="0" allow="midi; accelerometer; gyroscope; magnetometer"
+        sandbox="allow-scripts allow-modals allow-pointer-lock">
+      </iframe>
+    </strellis-display-panel>
+
+    {% for editor in editors %}
+    <strellis-editor slot="editor" {% if editor.selected %}selected="true"{% endif %} language="{{editor.language}}" filename="{{ editor.name }}" default-value="{{ editor.code }}"></strellis-editor>
+    {% endfor %}
+
+    <strellis-console slot="console"></strellis-console>
+  </strellis-provider>
+</body>
+
+</html>
