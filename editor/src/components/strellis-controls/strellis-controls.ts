@@ -1,5 +1,5 @@
 import { LitElement, unsafeCSS, html } from 'lit'
-import { customElement, state } from 'lit/decorators.js'
+import { customElement, state, property } from 'lit/decorators.js'
 import styles from './strellis-controls.scss?inline'
 import type { StrellisEditor } from '../strellis-editor/strellis-editor';
 
@@ -16,13 +16,14 @@ export class StrellisControls extends LitElement {
 
    static styles = unsafeCSS(styles);
 
-   private strudelInitialized = false;
-
    @state()
    vimModeEnabled = false;
 
    @state()
    sidebarEnabled = false;
+
+   @property()
+   strudelRepl: HTMLElement | null = null;
 
    async connectedCallback() {
       super.connectedCallback()
@@ -104,59 +105,43 @@ export class StrellisControls extends LitElement {
 
    _handleStop() {
       this.dispatchEvent(new CustomEvent('stop-code', { bubbles: true, composed: true }))
-      if (this.strudelInitialized) {
-
-         hush();
-      }
+      this._disconnectStrudel();
    }
 
    async _handleExecuteStrudelCode() {
-      // Initialize Strudel on main thread if not already done
-      if (!this.strudelInitialized) {
-         try {
-            await initStrudel();
-
-            // Wait for Strudel globals to be available
-            await this._waitForStrudelGlobals();
-
-            this.strudelInitialized = true;
-            console.log('Strudel initialized successfully');
-         } catch (error) {
-            console.error('Error initializing Strudel:', error);
-            return;
-         }
-      }
-
       // Function to execute Strudel code from editor
       const strudelEditor = document.querySelector('strellis-editor[filename="strudel.js"]') as StrellisEditor;
+
 
       if (strudelEditor && strudelEditor.editor) {
          const code = strudelEditor.editor.getValue();
          try {
-            eval(code);
+            const existingRepl = document.querySelector('strudel-editor');
+
+            if (existingRepl) {
+               this.strudelRepl = existingRepl as HTMLElement;
+            } else {
+               this.strudelRepl = document.createElement('strudel-editor');
+               document.body.appendChild(this.strudelRepl);
+            }
+
+            // this.strudelRepl.setAttribute('code', code)
+            this.strudelRepl.editor.setCode(code)
+            await this.strudelRepl.editor.evaluate(code);
+
          } catch (error) {
             console.error('Strudel execution error:', error);
          }
       }
    }
 
-   private async _waitForStrudelGlobals() {
-      // Wait for Strudel globals to be available
-      let attempts = 0;
-      const maxAttempts = 50; // 5 seconds max
-
-      while (attempts < maxAttempts) {
-         if (typeof (window as any).note !== 'undefined') {
-            console.log('Strudel globals are ready');
-            return;
-         }
-
-         await new Promise(resolve => setTimeout(resolve, 100));
-         attempts++;
+   _disconnectStrudel() {
+      if (this.strudelRepl) {
+         this.strudelRepl.editor.stop();
+         this.strudelRepl.removeAttribute('code');
       }
-
-      throw new Error('Strudel globals not available after initialization');
    }
+
 
    _handleToggleVim() {
       const toggleVimModeEvent = new CustomEvent('toggle-vim-mode', { bubbles: true, composed: true });

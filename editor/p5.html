@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>editor</title>
   <link rel="stylesheet" href="/src/styles.css" />
-  <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
+  <script src="https://unpkg.com/@strudel/repl@latest"></script>
   <script type="module" src="/src/strellis-provider.ts"></script>
   <script type="module" src="/src/components/strellis-sidebar/strellis-sidebar.ts"></script>
   <script type="module" src="/src/components/strellis-controls/strellis-controls.ts"></script>
@@ -94,11 +94,7 @@ table {
     
     <strellis-editor slot="editor" selected="true" language="javascript" filename="strudel.js" default-value="// Send to iframe context
 const sendToIframe = (event) =&gt; {
-  const iframe = document.querySelector(&quot;iframe&quot;);
-
-  if(iframe) {
-    iframe.contentWindow.postMessage({type: &#39;STRUDEL_EVENT&#39;, val: event}, &quot;*&quot;);
-  }
+  window.dispatchEvent(new CustomEvent(&#39;STRUDEL_EVENT&#39;, {detail: event})); // Dispatch custom event in current window
 };
 
 // Use it in your pattern chain
@@ -107,7 +103,6 @@ note(&quot;C3 E3 G3&quot;).s(&quot;sine&quot;)
     sendToIframe(event); // Send message as side effect
     return event; // Return event unchanged for audio to continue
   })
-  .play();
 "></strellis-editor>
     
     <strellis-editor slot="editor"  language="javascript" filename="sketch.js" default-value="// Listen for messages from the Strudel instance 
@@ -117,7 +112,6 @@ window.addEventListener(&quot;message&quot;, (event) =&gt; {
   if (event.data.type === &quot;STRUDEL_EVENT&quot;) {
     strudelData = event.data.val; // Store the received data for use in the sketch
   }
-
 });
 
 function setup() {
