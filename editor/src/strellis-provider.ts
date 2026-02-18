@@ -21,6 +21,17 @@ export class StrellisProvider extends LitElement {
       this.addEventListener('toggle-sidebar', () => {
          this.sidebarVisible = !this.sidebarVisible;
       });
+
+      window.addEventListener('STRUDEL_EVENT', (event: Event) => {
+         const customEvent = event as CustomEvent;
+
+         const iframe = document.body.querySelector("iframe") as HTMLIFrameElement;
+
+         if (iframe) {
+            const postMessageData = { type: 'STRUDEL_EVENT', val: customEvent.detail };
+            iframe.contentWindow?.postMessage(postMessageData, '*');
+         }
+      })
    }
 
    render() {
