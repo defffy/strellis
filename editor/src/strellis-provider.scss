@@ -25,6 +25,7 @@
 
 .container__editor-wrapper {
   position: relative;
+  display: flex;
 
   ::slotted(strellis-editor) {
     position: absolute;
@@ -36,12 +37,13 @@
 }
 
 .container__editor-wrapper__console {
+  --offset-top: 50px;
   position: absolute;
-  bottom: 50px;
-  right: 50px;
+  top: var(--offset-top);
+  right: 0;
+  height: calc(100% - calc(var(--offset-top) * 2));
   padding: tokens.$s-p-sm;
   width: 30%;
-  height: 30%;
   z-index: 100;
 }
 
