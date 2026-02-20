@@ -5,7 +5,6 @@ import type { StrellisEditor } from '../strellis-editor/strellis-editor';
 
 const TEMPLATE_OPTIONS = [
    { name: 'default', href: '/' },
-   { name: 'p5', href: '/p5' }
 ]
 
 /**
@@ -23,7 +22,7 @@ export class StrellisControls extends LitElement {
    sidebarEnabled = false;
 
    @property()
-   strudelRepl: HTMLElement | null = null;
+   strudelRepl: any | null = null;
 
    async connectedCallback() {
       super.connectedCallback()
