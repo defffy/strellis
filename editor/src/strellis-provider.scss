@@ -3,10 +3,11 @@
 .container {
     --controls-height: 5vh;
     display: grid;
-    height: 100vh;
+    height: 100vh; 
     grid-template-rows: var(--controls-height) auto; 
     gap: tokens.$s-md;
     position: relative;
+    overflow: hidden;
 }
 
 .container--hide-sidebar {
