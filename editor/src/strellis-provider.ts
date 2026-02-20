@@ -12,7 +12,7 @@ export class StrellisProvider extends LitElement {
    static styles = unsafeCSS(styles);
 
    @state()
-   sidebarVisible = false;
+   sidebarVisible = true;
 
    connectedCallback(): void {
       super.connectedCallback();
