@@ -5,22 +5,21 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
-  base: '/strellis/',
-  build: {
-    outDir: 'dist',
-    rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html'),
-        p5: path.resolve(__dirname, 'p5.html')
+   base: '/strellis/',
+   build: {
+      outDir: 'dist',
+      rollupOptions: {
+         input: {
+            main: path.resolve(__dirname, 'index.html')
+         }
       }
-    }
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@sass': path.resolve(__dirname, './src/sass'),
-      '@assets': path.resolve(__dirname, './src/assets'),
-    },
-  },
+   },
+   resolve: {
+      alias: {
+         '@': path.resolve(__dirname, './src'),
+         '@components': path.resolve(__dirname, './src/components'),
+         '@sass': path.resolve(__dirname, './src/sass'),
+         '@assets': path.resolve(__dirname, './src/assets'),
+      },
+   },
 })
