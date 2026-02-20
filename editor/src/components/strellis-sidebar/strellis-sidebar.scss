@@ -52,9 +52,14 @@
   background: tokens.$color-bg;
   text-align: left;
 
-  &:hover,
-  &:focus {
+  &:hover {
     background-color: tokens.$color-bg-hover; 
     cursor: pointer;
   }
+}
+
+
+.sidebar__files__file--active{
+  background-color: tokens.$color-highlighted;
+  font-weight: bold;
 }

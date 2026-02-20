@@ -1,4 +1,5 @@
 import { LitElement, unsafeCSS, html, nothing } from 'lit'
+import { classMap } from 'lit/directives/class-map.js';
 import { customElement, state } from 'lit/decorators.js'
 import styles from './strellis-sidebar.scss?inline'
 
@@ -18,6 +19,9 @@ export class StrellisSidebar extends LitElement {
    @state()
    openNewFileModal: boolean = false
 
+   @state()
+   currentOpenFile: string = ''
+
    firstUpdated() {
       this._syncFiles()
    }
@@ -35,6 +39,7 @@ export class StrellisSidebar extends LitElement {
    * Handle click on a file in the sidebar. This should focus the corresponding editor and bring it to the front if it's not already focused.
    */
    _handleFileClick(filename: string) {
+      this.currentOpenFile = filename;
       this.dispatchEvent(new CustomEvent('sidebar-file-selected', { detail: { filename }, bubbles: true, composed: true }))
    }
 
@@ -98,7 +103,7 @@ export class StrellisSidebar extends LitElement {
          </div>
          <div class="sidebar__files">
             ${this.files?.map(file => html`
-               <button class="sidebar__files__file" @click=${() => this._handleFileClick(file)}>${file}</button>
+               <button class=${classMap({ 'sidebar__files__file': true, 'sidebar__files__file--active': this.currentOpenFile === file })} @click=${() => this._handleFileClick(file)}>${file}</button>
             `
       )}
          </div>
