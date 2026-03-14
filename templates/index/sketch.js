@@ -1,4 +1,6 @@
 // Listen for messages from the Strudel instance 
+let strudelBData = {};
+let strudelMData = {};
 let strudelData = {};
 let colorPairs;
 
@@ -6,7 +8,14 @@ const COLUMNS_COUNT = 8
 
 window.addEventListener("message", (event) => {
    if (event.data.type === "STRUDEL_EVENT") {
-      strudelData = event.data.val; // Store the received data for use in the sketch
+      if (event.data.eventName === 'STRUDEL_B') {
+         strudelBData = event.data.val;
+      } else if (event.data.eventName === 'STRUDEL_M') {
+         strudelMData = event.data.val;
+      } else {
+
+         strudelData = event.data.val;
+      }
    }
 });
 
@@ -26,10 +35,11 @@ function setup() {
 }
 
 function draw() {
-   const n = map(getNoiseValueFromNote(strudelData.note), 0, 1, 0, random(200));
+   const bNoise = map(getNoiseValueFromNote(strudelBData.note), 0, 1, 0, random(200));
+   const mNoise = map(getNoiseValueFromNote(strudelMData.note), 0, 1, random(100), random(255));
 
-   const colorTransition = map(sin(frameCount * 0.05 * n), -1, 1, 0, 1);
-   const xTransition = map(sin((frameCount * 0.5 * n)), -1, 1, 0, 1);
+   const colorTransition = map(sin(frameCount * 0.05 * bNoise), -1, 1, 0, 1);
+   const xTransition = map(sin((frameCount * 0.5 * mNoise)), -1, 1, 0, 1);
 
    let colorIndex = 0;
 
@@ -38,7 +48,7 @@ function draw() {
       const rectFill = lerpColor(palette[0], palette[1], colorTransition);
       push();
       noStroke();
-      rectFill.setAlpha(n);
+      rectFill.setAlpha(bNoise);
       fill(rectFill);
       let baseX = x;
       const endX = x + 200;
@@ -46,6 +56,14 @@ function draw() {
 
       translate(xVal, 0)
 
+      if (random(1) > 0.5) {
+
+         rectMode(CENTER);
+      } else {
+         rectMode(CORNER);
+      }
+
+      scale(1 + bNoise * 0.01, 1 + mNoise * 0.01);
       rect(0, 0, width / COLUMNS_COUNT, height);
       pop();
 
