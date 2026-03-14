@@ -92,19 +92,29 @@ table {
 "></strellis-editor>
     
     <strellis-editor slot="editor" selected="true" language="javascript" filename="strudel.js" default-value="// Send to iframe context
-const sendToIframe = (event) =&gt; {
-  window.dispatchEvent(new CustomEvent(&#39;STRUDEL_EVENT&#39;, {detail: event})); // Dispatch custom event in current window
+const sendToIframe = (event, eventName) =&gt; {
+  window.dispatchEvent(new CustomEvent(&#39;STRUDEL_EVENT&#39;, {detail: {event, eventName}})); // Dispatch custom event in current window
 };
 
-// Use it in your pattern chain
-note(&quot;C3 E3 G3&quot;).s(&quot;sine&quot;)
-  .fmap((event) =&gt; {
-    sendToIframe(event); // Send message as side effect
+
+
+stack(
+s(&quot;bd? hh sd? cp&quot;).gain(0.5).lpf(1000),
+s(&quot;&lt;bd bd&gt;*8&quot;).lpf(500).gain(0.5).fmap((event) =&gt; {
+    sendToIframe(event, &#39;STRUDEL_B&#39;); // Send message as side effect
     return event; // Return event unchanged for audio to continue
-  })
-"></strellis-editor>
+  }),
+s(&quot;&lt;hh hh hh hh&gt;*4&quot;).gain(0.9).lpf(800),
+n(&quot;&lt;1 4 3 2&gt;*16&quot;).scale(&quot;a:minor:pentatonic&quot;).s(&quot;sawtooth&quot;).gain(0.25).vib(&quot;&lt;.5 1 2 4 8 16&gt;&quot;).fmap((event) =&gt; {
+    sendToIframe(event, &#39;STRUDEL_M&#39;); // Send message as side effect
+    return event; // Return event unchanged for audio to continue
+  }),
+note(&quot;&lt;c a g b2&gt;&quot;).s(&#39;supersaw&#39;).tremolo(2)
+)"></strellis-editor>
     
     <strellis-editor slot="editor"  language="javascript" filename="sketch.js" default-value="// Listen for messages from the Strudel instance 
+let strudelBData = {};
+let strudelMData = {};
 let strudelData = {};
 let colorPairs;
 
@@ -112,7 +122,14 @@ const COLUMNS_COUNT = 8
 
 window.addEventListener(&quot;message&quot;, (event) =&gt; {
    if (event.data.type === &quot;STRUDEL_EVENT&quot;) {
-      strudelData = event.data.val; // Store the received data for use in the sketch
+      if (event.data.eventName === &#39;STRUDEL_B&#39;) {
+         strudelBData = event.data.val;
+      } else if (event.data.eventName === &#39;STRUDEL_M&#39;) {
+         strudelMData = event.data.val;
+      } else {
+
+         strudelData = event.data.val;
+      }
    }
 });
 
@@ -132,10 +149,11 @@ function setup() {
 }
 
 function draw() {
-   const n = map(getNoiseValueFromNote(strudelData.note), 0, 1, 0, random(200));
+   const bNoise = map(getNoiseValueFromNote(strudelBData.note), 0, 1, 0, random(200));
+   const mNoise = map(getNoiseValueFromNote(strudelMData.note), 0, 1, random(100), random(255));
 
-   const colorTransition = map(sin(frameCount * 0.05 * n), -1, 1, 0, 1);
-   const xTransition = map(sin((frameCount * 0.5 * n)), -1, 1, 0, 1);
+   const colorTransition = map(sin(frameCount * 0.05 * bNoise), -1, 1, 0, 1);
+   const xTransition = map(sin((frameCount * 0.5 * mNoise)), -1, 1, 0, 1);
 
    let colorIndex = 0;
 
@@ -144,7 +162,7 @@ function draw() {
       const rectFill = lerpColor(palette[0], palette[1], colorTransition);
       push();
       noStroke();
-      rectFill.setAlpha(n);
+      rectFill.setAlpha(bNoise);
       fill(rectFill);
       let baseX = x;
       const endX = x + 200;
@@ -152,6 +170,14 @@ function draw() {
 
       translate(xVal, 0)
 
+      if (random(1) &gt; 0.5) {
+
+         rectMode(CENTER);
+      } else {
+         rectMode(CORNER);
+      }
+
+      scale(1 + bNoise * 0.01, 1 + mNoise * 0.01);
       rect(0, 0, width / COLUMNS_COUNT, height);
       pop();
 
