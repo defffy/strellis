@@ -46,6 +46,14 @@ export class StrellisDisplayPanel extends LitElement {
          }
       })
 
+      // Relay strudel events to the display iframe
+      window.addEventListener('strellis-strudel-event', (event: Event) => {
+         const customEvent = event as CustomEvent
+         if (this.iframe?.contentWindow) {
+            this.iframe.contentWindow.postMessage(customEvent.detail, '*')
+         }
+      })
+
    }
 
    private _generateIframeSrcDoc(html: string) {
