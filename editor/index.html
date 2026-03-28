@@ -91,26 +91,38 @@ table {
 }
 "></strellis-editor>
     
-    <strellis-editor slot="editor" selected="true" language="javascript" filename="strudel.js" default-value="// Send to iframe context
-const sendToIframe = (event, eventName) =&gt; {
-  window.dispatchEvent(new CustomEvent(&#39;STRUDEL_EVENT&#39;, {detail: {event, eventName}})); // Dispatch custom event in current window
-};
+    <strellis-editor slot="editor" selected="true" language="javascript" filename="strudel.js" default-value="const e = (value, eventName) =&gt; {
 
+  const msg = {
+    type: &quot;STRUDEL_EVENT&quot;,
+    val: value,
+    eventName: eventName,
+  };
+  window.dispatchEvent(new CustomEvent(&#39;STRUDEL_EVENT&#39;, { detail: msg }));
 
+}
 
 stack(
-s(&quot;bd? hh sd? cp&quot;).gain(0.5).lpf(1000),
-s(&quot;&lt;bd bd&gt;*8&quot;).lpf(500).gain(0.5).fmap((event) =&gt; {
-    sendToIframe(event, &#39;STRUDEL_B&#39;); // Send message as side effect
-    return event; // Return event unchanged for audio to continue
+  s(&quot;bd? hh sd? cp&quot;)
+    .gain(0.5)
+    .lpf(1000),
+  s(&quot;bd? hh sd? cp&quot;).log(value =&gt; {
+    e(value, &#39;STRUDEL_B&#39;)
+    return &#39;EMIT STRUDEL_B&#39;
   }),
-s(&quot;&lt;hh hh hh hh&gt;*4&quot;).gain(0.9).lpf(800),
-n(&quot;&lt;1 4 3 2&gt;*16&quot;).scale(&quot;a:minor:pentatonic&quot;).s(&quot;sawtooth&quot;).gain(0.25).vib(&quot;&lt;.5 1 2 4 8 16&gt;&quot;).fmap((event) =&gt; {
-    sendToIframe(event, &#39;STRUDEL_M&#39;); // Send message as side effect
-    return event; // Return event unchanged for audio to continue
-  }),
-note(&quot;&lt;c a g b2&gt;&quot;).s(&#39;supersaw&#39;).tremolo(2)
-)"></strellis-editor>
+  n(&quot;&lt;1 4 3 2&gt;*16&quot;)
+    .scale(&quot;a:minor:pentatonic&quot;)
+    .s(&quot;sawtooth&quot;)
+    .gain(0.25),
+  n(&quot;&lt;1 4 3 2&gt;*16&quot;)
+    .scale(&quot;a:minor:pentatonic&quot;)
+    .s(&quot;sawtooth&quot;)
+    .log(value =&gt; {
+      e(value, &#39;STRUDEL_M&#39;)
+      return &#39;EMIT STRUDEL_M&#39;
+    })
+);
+"></strellis-editor>
     
     <strellis-editor slot="editor"  language="javascript" filename="sketch.js" default-value="// Listen for messages from the Strudel instance 
 let strudelBData = {};
@@ -123,12 +135,12 @@ const COLUMNS_COUNT = 8
 window.addEventListener(&quot;message&quot;, (event) =&gt; {
    if (event.data.type === &quot;STRUDEL_EVENT&quot;) {
       if (event.data.eventName === &#39;STRUDEL_B&#39;) {
-         strudelBData = event.data.val;
+         strudelBData = event.data.value;
       } else if (event.data.eventName === &#39;STRUDEL_M&#39;) {
-         strudelMData = event.data.val;
+         strudelMData = event.data.value;
       } else {
 
-         strudelData = event.data.val;
+         strudelData = event.data.value;
       }
    }
 });
@@ -149,11 +161,14 @@ function setup() {
 }
 
 function draw() {
-   const bNoise = map(getNoiseValueFromNote(strudelBData.note), 0, 1, 0, random(200));
-   const mNoise = map(getNoiseValueFromNote(strudelMData.note), 0, 1, random(100), random(255));
+   const bNoise = map(getNoiseValueFromNote(strudelBData?.note), 0, 1, 0, random(200));
+   const mNoise = map(getNoiseValueFromNote(strudelMData?.note), 0, 1, random(100), random(255));
 
    const colorTransition = map(sin(frameCount * 0.05 * bNoise), -1, 1, 0, 1);
    const xTransition = map(sin((frameCount * 0.5 * mNoise)), -1, 1, 0, 1);
+
+   console.log(&#39;b&#39;, strudelBData)
+   console.log(&#39;m&#39;, strudelMData)
 
    let colorIndex = 0;
 
