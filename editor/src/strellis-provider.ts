@@ -1,42 +1,46 @@
-import { LitElement, unsafeCSS, html } from 'lit'
-import { customElement, state } from 'lit/decorators.js'
-import { classMap } from 'lit/directives/class-map.js';
-import styles from './strellis-provider.scss?inline'
+import { LitElement, unsafeCSS, html } from "lit";
+import { customElement, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import styles from "./strellis-provider.scss?inline";
 
 /**
  * A provider component for Strellis editor.
  */
-@customElement('strellis-provider')
+@customElement("strellis-provider")
 export class StrellisProvider extends LitElement {
+  static styles = unsafeCSS(styles);
 
-   static styles = unsafeCSS(styles);
+  @state()
+  sidebarVisible = true;
 
-   @state()
-   sidebarVisible = true;
+  connectedCallback(): void {
+    super.connectedCallback();
 
-   connectedCallback(): void {
-      super.connectedCallback();
+    // Listen for custom events to toggle sidebar visibility
+    this.addEventListener("toggle-sidebar", () => {
+      this.sidebarVisible = !this.sidebarVisible;
+    });
 
-      // Listen for custom events to toggle sidebar visibility
-      this.addEventListener('toggle-sidebar', () => {
-         this.sidebarVisible = !this.sidebarVisible;
-      });
 
-      window.addEventListener('STRUDEL_EVENT', (event: Event) => {
-         const customEvent = event as CustomEvent;
+    window.addEventListener('STRUDEL_EVENT', ((event: CustomEvent) => {
+      const displayIframe = document?.querySelector('iframe');
 
-         const iframe = document.body.querySelector("iframe") as HTMLIFrameElement;
 
-         if (iframe) {
-            const postMessageData = { type: 'STRUDEL_EVENT', val: customEvent.detail };
-            iframe.contentWindow?.postMessage(postMessageData, '*');
-         }
-      })
-   }
 
-   render() {
-      return html`
-      <div class=${classMap({ container: true, 'container--hide-sidebar': !this.sidebarVisible })}>
+      const {val, eventName} = event.detail;
+
+      displayIframe?.contentWindow?.postMessage({type: 'STRUDEL_EVENT', value: val.value, eventName}, '*')
+    }) as EventListener)
+  }
+
+  render() {
+    return html`
+      <div
+        class=${classMap({
+      container: true,
+      "container--hide-sidebar": !this.sidebarVisible,
+    })}
+      >
         <div class="container__top">
           <slot name="controls"></slot>
         </div>
@@ -50,23 +54,21 @@ export class StrellisProvider extends LitElement {
             </div>
 
             <div class="container__editor-wrapper__console">
-               <slot name="console"></slot>
+              <slot name="console"></slot>
             </div>
           </div>
-
         </div>
 
-
-         <div class="container__display-panel">
-           <slot name="display-panel"></slot>
-         </div>
+        <div class="container__display-panel">
+          <slot name="display-panel"></slot>
+        </div>
       </div>
-    `
-   }
+    `;
+  }
 }
 
 declare global {
-   interface HTMLElementTagNameMap {
-      'strellis-provider': StrellisProvider
-   }
+  interface HTMLElementTagNameMap {
+    "strellis-provider": StrellisProvider;
+  }
 }
