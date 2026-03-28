@@ -9,12 +9,12 @@ const COLUMNS_COUNT = 8
 window.addEventListener("message", (event) => {
    if (event.data.type === "STRUDEL_EVENT") {
       if (event.data.eventName === 'STRUDEL_B') {
-         strudelBData = event.data.val;
+         strudelBData = event.data.value;
       } else if (event.data.eventName === 'STRUDEL_M') {
-         strudelMData = event.data.val;
+         strudelMData = event.data.value;
       } else {
 
-         strudelData = event.data.val;
+         strudelData = event.data.value;
       }
    }
 });
@@ -35,11 +35,14 @@ function setup() {
 }
 
 function draw() {
-   const bNoise = map(getNoiseValueFromNote(strudelBData.note), 0, 1, 0, random(200));
-   const mNoise = map(getNoiseValueFromNote(strudelMData.note), 0, 1, random(100), random(255));
+   const bNoise = map(getNoiseValueFromNote(strudelBData?.note), 0, 1, 0, random(200));
+   const mNoise = map(getNoiseValueFromNote(strudelMData?.note), 0, 1, random(100), random(255));
 
    const colorTransition = map(sin(frameCount * 0.05 * bNoise), -1, 1, 0, 1);
    const xTransition = map(sin((frameCount * 0.5 * mNoise)), -1, 1, 0, 1);
+
+   console.log('b', strudelBData)
+   console.log('m', strudelMData)
 
    let colorIndex = 0;
 
