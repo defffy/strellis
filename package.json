@@ -17,6 +17,7 @@
     "@codemirror/lang-javascript": "^6.2.5",
     "@codemirror/state": "^6.6.0",
     "@codemirror/view": "^6.41.0",
+    "@replit/codemirror-vim": "^6.3.0",
     "codemirror": "^6.0.2"
   }
 }
