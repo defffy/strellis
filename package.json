@@ -12,5 +12,11 @@
     "editor:add": "bun add --cwd editor",
     "generate-templates:run": "bun run --filter generate-template run",
     "generate-templates:add": "bun add --cwd scripts/generate-template"
+  },
+  "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.5",
+    "@codemirror/state": "^6.6.0",
+    "@codemirror/view": "^6.41.0",
+    "codemirror": "^6.0.2"
   }
 }
