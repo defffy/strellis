@@ -2,8 +2,10 @@ import { LitElement, unsafeCSS, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import styles from "./strellis-editor.scss?inline";
 import { minimalSetup } from "codemirror";
+import { Compartment } from "@codemirror/state";
 import { lineNumbers, EditorView } from "@codemirror/view";
 import { javascript } from "@codemirror/lang-javascript";
+import { vim } from "@replit/codemirror-vim";
 
 /**
  * Text editor
@@ -13,7 +15,7 @@ export class StrellisEditor extends LitElement {
   static styles = unsafeCSS(styles);
 
   @property()
-  editor!: monaco.editor.IStandaloneCodeEditor;
+  editor!: EditorView;
 
   @property({ type: String, reflect: true })
   language: string = "javascript";
@@ -21,20 +23,20 @@ export class StrellisEditor extends LitElement {
   @property({ type: String, reflect: true, attribute: "default-value" })
   defaultValue: string = "";
 
-  @query(".monaco-container")
+  @query(".editor-container")
   container!: HTMLDivElement;
 
   @property({ type: Boolean, reflect: true })
   selected: boolean = false;
 
-  @query(".vim-status-container")
-  vimStatusBar!: HTMLDivElement;
-
   @state()
-  vimModeEnabled: boolean = false;
+  vimModeEnabled: boolean = true;
 
   @state()
   vimMode!: VimAdapterInstance;
+
+  @state()
+  vimCompartment!: Compartment;
 
   connectedCallback() {
     super.connectedCallback();
@@ -65,26 +67,34 @@ export class StrellisEditor extends LitElement {
         this._setHiddenStyles(true);
       }
     });
+
+    this.vimCompartment = new Compartment();
   }
 
   firstUpdated() {
     this.editor = new EditorView({
       doc: this.defaultValue,
-      extensions: [minimalSetup, lineNumbers(), javascript()],
+      extensions: [
+        minimalSetup,
+        lineNumbers(),
+        this.vimCompartment.of([]),
+        javascript(),
+      ],
       parent: this.container,
     });
-
-    console.log(this.editor);
 
     this._setVimMode();
   }
 
   _setVimMode() {
     if (this.vimModeEnabled) {
-      this.vimMode = initVimMode(this.editor, this.vimStatusBar);
-    } else if (!this.vimModeEnabled && this.vimMode) {
-      this.vimMode.dispose();
-      this.vimStatusBar.innerHTML = "";
+      this.editor.dispatch({
+        effects: this.vimCompartment.reconfigure(vim({ status: true })),
+      });
+    } else if (!this.vimModeEnabled) {
+      this.editor.dispatch({
+        effects: this.vimCompartment.reconfigure([]),
+      });
     }
   }
 
@@ -109,10 +119,7 @@ export class StrellisEditor extends LitElement {
   }
 
   render() {
-    return html`
-      <div class="monaco-container"></div>
-      <div class="vim-status-container"></div>
-    `;
+    return html` <div class="editor-container"></div> `;
   }
 }
 
