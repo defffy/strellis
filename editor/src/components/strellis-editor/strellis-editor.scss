@@ -46,8 +46,8 @@
   width: 100%;
 }
 
-.line-highlight {
+.cm-line{
   // Darker yellow with some transparency for better visibility
   background: tokens.$color-highlighted; 
-  z-index: -1;
+  width: fit-content 
 }
