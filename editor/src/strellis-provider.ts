@@ -21,25 +21,25 @@ export class StrellisProvider extends LitElement {
       this.sidebarVisible = !this.sidebarVisible;
     });
 
+    window.addEventListener("STRUDEL_EVENT", ((event: CustomEvent) => {
+      const displayIframe = document?.querySelector("iframe");
 
-    window.addEventListener('STRUDEL_EVENT', ((event: CustomEvent) => {
-      const displayIframe = document?.querySelector('iframe');
+      const { val, eventName } = event.detail;
 
-
-
-      const {val, eventName} = event.detail;
-
-      displayIframe?.contentWindow?.postMessage({type: 'STRUDEL_EVENT', value: val.value, eventName}, '*')
-    }) as EventListener)
+      displayIframe?.contentWindow?.postMessage(
+        { type: "STRUDEL_EVENT", value: val.value, eventName },
+        "*",
+      );
+    }) as EventListener);
   }
 
   render() {
     return html`
       <div
         class=${classMap({
-      container: true,
-      "container--hide-sidebar": !this.sidebarVisible,
-    })}
+          container: true,
+          "container--hide-sidebar": !this.sidebarVisible,
+        })}
       >
         <div class="container__top">
           <slot name="controls"></slot>
@@ -51,10 +51,6 @@ export class StrellisProvider extends LitElement {
           <div class="container__editor-wrapper">
             <div class="container__editor-wrapper__editors">
               <slot name="editor"></slot>
-            </div>
-
-            <div class="container__editor-wrapper__console">
-              <slot name="console"></slot>
             </div>
           </div>
         </div>

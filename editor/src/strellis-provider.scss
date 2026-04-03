@@ -1,32 +1,44 @@
 @use "@sass/utils/tokens";
 
 .container {
-    --controls-height: 5vh;
-    display: grid;
-    height: 100vh; 
-    grid-template-rows: var(--controls-height) auto; 
-    gap: tokens.$s-md;
-    position: relative;
-    overflow: hidden;
+  --controls-height: 5vh;
+  display: grid;
+  height: 100vh;
+  grid-template-rows: var(--controls-height) auto;
+  gap: tokens.$s-md;
+  position: relative;
+  overflow: hidden;
 }
 
 .container--hide-sidebar {
-    --container-editor-columns: 1fr;
-    ::slotted(strellis-sidebar) {
-        display: none;
-    }
+  --container-editor-columns: 1fr;
+  ::slotted(strellis-sidebar) {
+    display: none;
+  }
 }
 
 .container--hide-top {
-    --controls-height: 0vh;
+  --controls-height: 0vh;
 }
 
 .container__top {
 }
 
+.container__editor {
+  display: grid;
+  grid-template-columns: var(--container-editor-columns, auto 1fr);
+}
+
 .container__editor-wrapper {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.container__editor-wrapper__editors {
   position: relative;
-  display: flex;
+  width: 100%;
 
   ::slotted(strellis-editor) {
     position: absolute;
@@ -38,21 +50,9 @@
 }
 
 .container__editor-wrapper__console {
-  --offset-top: 50px;
-  position: absolute;
-  top: var(--offset-top);
-  right: 0;
   height: calc(100% - calc(var(--offset-top) * 2));
-  padding: tokens.$s-p-sm;
-  width: 30%;
   z-index: 100;
 }
-
-.container__editor {
-    display: grid;
-    grid-template-columns: var(--container-editor-columns, auto 1fr);
-}
-
 
 .container__display-panel {
   position: absolute;
