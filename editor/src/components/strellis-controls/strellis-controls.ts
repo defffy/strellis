@@ -13,7 +13,7 @@ export class StrellisControls extends LitElement {
   static styles = unsafeCSS(styles);
 
   @state()
-  vimModeEnabled = false;
+  vimModeEnabled = true;
 
   @state()
   sidebarEnabled = false;
