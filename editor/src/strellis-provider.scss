@@ -24,6 +24,22 @@
 .container__top {
 }
 
+.container__settings {
+  padding: tokens.$s-p-md;
+  position: absolute;
+  top: var(--controls-height);
+  right: 0;
+  height: calc(100% - var(--controls-height));
+  width: 40%;
+  translate: 100% 0;
+  transition: translate 0.3s;
+  z-index: 100;
+}
+
+.container__settings--visible {
+  translate: 0 0;
+}
+
 .container__editor {
   display: grid;
   grid-template-columns: var(--container-editor-columns, auto 1fr);
