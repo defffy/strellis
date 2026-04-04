@@ -52,11 +52,14 @@ export class StrellisProvider extends LitElement {
           <slot name="controls"></slot>
         </div>
 
-        ${this.settingsPanelVisible
-          ? html` <div class="container__settings">
-              <slot name="settings"></slot>
-            </div>`
-          : nothing}
+        <div
+          class=${classMap({
+            container__settings: true,
+            "container__settings--visible": this.settingsPanelVisible,
+          })}
+        >
+          <slot name="settings"></slot>
+        </div>
 
         <div class="container__editor">
           <slot name="sidebar"></slot>
