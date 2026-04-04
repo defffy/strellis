@@ -15,6 +15,9 @@ export class StrellisControls extends LitElement {
   @property()
   strudelRepl: any | null = null;
 
+  @state()
+  playState: "running" | "stopped" = "stopped";
+
   async connectedCallback() {
     super.connectedCallback();
     // Listen for key events to trigger run and stop actions
@@ -22,19 +25,13 @@ export class StrellisControls extends LitElement {
       // Ctrl+Enter to run code
       if (e.ctrlKey && e.key === "Enter") {
         e.preventDefault();
-        await this._handleRun();
-      }
-
-      // Ctrl+S to stop code
-      if (e.ctrlKey && e.key === "s") {
-        e.preventDefault();
-        this._handleStop();
+        await this._handlePlayState();
       }
 
       // Ctrl+S to stop code
       // TODO: Pick a better keybinding that doesn't conflict with browser shortcuts
       // or codemirror's default keybindings
-      if (e.ctrlKey && e.key === "c") {
+      if (e.ctrlKey && e.key === "/") {
         e.preventDefault();
         this._handleToggleSettingsPanel();
       }
@@ -104,6 +101,16 @@ export class StrellisControls extends LitElement {
     this._disconnectStrudel();
   }
 
+  _handlePlayState() {
+    if (this.playState === "stopped") {
+      this._handleRun();
+      this.playState = "running";
+    } else if (this.playState === "running") {
+      this._handleStop();
+      this.playState = "stopped";
+    }
+  }
+
   async _handleExecuteStrudelCode() {
     // Function to execute Strudel code from editor
     const strudelEditor = document.querySelector(
@@ -150,11 +157,19 @@ export class StrellisControls extends LitElement {
   render() {
     return html`
       <div class="container">
-        <button @click=${this._handleRun}>Run (CTRL + Enter)</button>
-        <button @click=${this._handleStop}>Stop (CTRL + s)</button>
-        <button @click=${this._handleToggleSettingsPanel}>
-          Settings(CTRL + c)
-        </button>
+        <div class="container__branding">
+          <h1>Strellis Live</h1>
+        </div>
+        <div class="container__buttons">
+          <button @click=${this._handlePlayState}>
+            ${this.playState === "stopped"
+              ? "Run (CTRL + Enter)"
+              : "Stop (CTRL + s)"}
+          </button>
+          <button @click=${this._handleToggleSettingsPanel}>
+            Settings(CTRL + /)
+          </button>
+        </div>
       </div>
     `;
   }
