@@ -12,12 +12,6 @@ const TEMPLATE_OPTIONS = [{ name: "default", href: "/" }];
 export class StrellisControls extends LitElement {
   static styles = unsafeCSS(styles);
 
-  @state()
-  vimModeEnabled = true;
-
-  @state()
-  sidebarEnabled = false;
-
   @property()
   strudelRepl: any | null = null;
 
@@ -37,14 +31,12 @@ export class StrellisControls extends LitElement {
         this._handleStop();
       }
 
-      if (e.ctrlKey && e.key === "V") {
+      // Ctrl+S to stop code
+      // TODO: Pick a better keybinding that doesn't conflict with browser shortcuts
+      // or codemirror's default keybindings
+      if (e.ctrlKey && e.key === "c") {
         e.preventDefault();
-        this._handleToggleVim();
-      }
-
-      if (e.ctrlKey && e.key === "B") {
-        e.preventDefault();
-        this._handleToggleSidebar();
+        this._handleToggleSettingsPanel();
       }
     });
   }
@@ -146,32 +138,13 @@ export class StrellisControls extends LitElement {
     }
   }
 
-  _handleToggleVim() {
-    const toggleVimModeEvent = new CustomEvent("toggle-vim-mode", {
-      bubbles: true,
-      composed: true,
-    });
-    this.vimModeEnabled = !this.vimModeEnabled;
-    this.dispatchEvent(toggleVimModeEvent);
-  }
-
-  _handleToggleSidebar() {
-    const toggleSidebarEvent = new CustomEvent("toggle-sidebar", {
-      bubbles: true,
-      composed: true,
-    });
-    this.sidebarEnabled = !this.sidebarEnabled;
-    this.dispatchEvent(toggleSidebarEvent);
-  }
-
-  _handleChooseTemplate(e: Event) {
-    const url = (e.target as HTMLSelectElement).value;
-
-    const BASE_URL = window.location.origin + "/strellis/";
-
-    if (url) {
-      window.location.href = `${BASE_URL.replace(/\/$/, "")}/${url.replace(/^\//, "")}`;
-    }
+  _handleToggleSettingsPanel() {
+    this.dispatchEvent(
+      new CustomEvent("toggle-settings-panel", {
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   render() {
@@ -179,29 +152,9 @@ export class StrellisControls extends LitElement {
       <div class="container">
         <button @click=${this._handleRun}>Run (CTRL + Enter)</button>
         <button @click=${this._handleStop}>Stop (CTRL + s)</button>
-        <button @click=${this._handleToggleSidebar}>
-          ${this.sidebarEnabled ? "Hide" : "Show"} sidebar (CTRL + SHIFT + b)
+        <button @click=${this._handleToggleSettingsPanel}>
+          Settings(CTRL + c)
         </button>
-        <button @click=${this._handleToggleVim}>
-          ${this.vimModeEnabled ? "Disable" : "Enable"} Vim Mode (CTRL + SHIFT +
-          v)
-        </button>
-        <div class="template-selector-container">
-          <button popovertarget="select-template">Select Template</button>
-          <div
-            id="select-template"
-            class="template-selector-container__modal"
-            popover
-          >
-            <h3>Choose a template:</h3>
-            <div class="template-selector-container__modal__options">
-              ${TEMPLATE_OPTIONS.map(
-                (option) =>
-                  html`<a href="/strellis${option.href}">${option.name}</a>`,
-              )}
-            </div>
-          </div>
-        </div>
       </div>
     `;
   }
