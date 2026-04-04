@@ -12,6 +12,7 @@
   visibility: visible;
   z-index: 10;
   overflow: hidden; /* Let Monaco handle its own scrolling */
+  padding-inline: tokens.$s-p-md;
 }
 
 .cm-editor {
@@ -29,11 +30,12 @@
 }
 
 .cm-gutterElement {
-  background: tokens.$color-highlighted;
+  background: rgba(black, 0.5);
+  color: tokens.$color-text-light;
 }
 
 .cm-line {
   // Darker yellow with some transparency for better visibility
-  background: tokens.$color-highlighted;
+  background: rgba(tokens.$color-highlighted, 0.5);
   width: fit-content;
 }
