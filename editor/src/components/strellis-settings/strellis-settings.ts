@@ -1,5 +1,5 @@
 import { LitElement, unsafeCSS, html } from "lit";
-import { customElement, state, property } from "lit/decorators.js";
+import { customElement, state, property, query } from "lit/decorators.js";
 import styles from "./strellis-settings.scss?inline";
 import type { StrellisEditor } from "../strellis-editor/strellis-editor";
 
@@ -21,6 +21,12 @@ export class StrellisSettings extends LitElement {
   @property()
   strudelRepl: any | null = null;
 
+  @query("#toggle-sidebar")
+  toggleSidebarCheckbox!: HTMLInputElement;
+
+  @query("#toggle-vim")
+  toggleVimCheckbox!: HTMLInputElement;
+
   async connectedCallback() {
     super.connectedCallback();
     // Listen for key events to trigger run and stop actions
@@ -36,13 +42,13 @@ export class StrellisSettings extends LitElement {
       }
     });
   }
-
   _handleToggleVim() {
     const toggleVimModeEvent = new CustomEvent("toggle-vim-mode", {
       bubbles: true,
       composed: true,
     });
     this.vimModeEnabled = !this.vimModeEnabled;
+    this.toggleVimCheckbox.checked = this.vimModeEnabled;
     this.dispatchEvent(toggleVimModeEvent);
   }
 
@@ -52,6 +58,7 @@ export class StrellisSettings extends LitElement {
       composed: true,
     });
     this.sidebarEnabled = !this.sidebarEnabled;
+    this.toggleSidebarCheckbox.checked = this.sidebarEnabled;
     this.dispatchEvent(toggleSidebarEvent);
   }
 
@@ -65,31 +72,62 @@ export class StrellisSettings extends LitElement {
     }
   }
 
+  _handleCloseSettings() {
+    const toggleSettingsPanelEvent = new CustomEvent("toggle-settings-panel", {
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(toggleSettingsPanelEvent);
+  }
+
+  _chooseTemplate(e: Event) {
+    const url = (e.target as HTMLSelectElement).value;
+
+    const BASE_URL = window.location.origin;
+
+    if (url) {
+      window.location.href = `${BASE_URL.replace(/\/$/, "")}/${url.replace(/^\//, "")}`;
+    }
+  }
+
   render() {
     return html`
       <div class="container">
-        <button @click=${this._handleToggleSidebar}>
-          ${this.sidebarEnabled ? "Hide" : "Show"} sidebar (CTRL + SHIFT + b)
-        </button>
-        <button @click=${this._handleToggleVim}>
-          ${this.vimModeEnabled ? "Disable" : "Enable"} Vim Mode (CTRL + SHIFT +
-          v)
-        </button>
+        <button @click="${this._handleCloseSettings}">Close Settings</button>
+
+        <div class="container__checkbox-group">
+          <input
+            type="checkbox"
+            id="toggle-sidebar"
+            name="toggle-sidebar"
+            @change=${this._handleToggleSidebar}
+          />
+          <label for="toggle-sidebar"> Show sidebar (CTRL + SHIFT + b) </label>
+        </div>
+
+        <div class="container__checkbox-group">
+          <input
+            type="checkbox"
+            id="toggle-vim"
+            name="toggle-vim"
+            @change=${this._handleToggleVim}
+          />
+          <label for="toggle-vim"> Enable Vim Mode (CTRL + SHIFT + v) </label>
+        </div>
+
         <div class="template-selector-container">
-          <button popovertarget="select-template">Select Template</button>
-          <div
-            id="select-template"
-            class="template-selector-container__modal"
-            popover
+          <h3>Choose a template:</h3>
+          <select
+            class="template-selector-container__modal__options"
+            @change=${this._chooseTemplate}
           >
-            <h3>Choose a template:</h3>
-            <div class="template-selector-container__modal__options">
-              ${TEMPLATE_OPTIONS.map(
-                (option) =>
-                  html`<a href="/strellis${option.href}">${option.name}</a>`,
-              )}
-            </div>
-          </div>
+            ${TEMPLATE_OPTIONS.map(
+              (option) =>
+                html`<option value="/strellis${option.href}">
+                  ${option.name}
+                </option>`,
+            )}
+          </select>
         </div>
       </div>
     `;
