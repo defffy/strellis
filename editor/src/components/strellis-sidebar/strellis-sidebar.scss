@@ -7,21 +7,19 @@
   padding: tokens.$s-p-md;
   display: flex;
   flex-direction: column;
-  gap: tokens.$s-md; 
+  gap: tokens.$s-md;
   height: calc(100% - tokens.$s-p-lg);
 }
 
 .sidebar__controls__button,
-.sidebar__controls__new-file__form button{
+.sidebar__controls__new-file__form button {
   @include buttons.button-small;
-
 }
 
 .sidebar__controls__new-file {
   position: relative;
   margin-top: tokens.$s-md;
 }
-
 
 .sidebar__controls__new-file__form {
   display: flex;
@@ -33,10 +31,10 @@
     border-radius: tokens.$border-radius-thin;
     border: 1px solid tokens.$color-border-dark;
     padding: tokens.$s-p-xs;
-     @include type.body-extra-small;
+    @include type.body-extra-small;
   }
 
-  button { 
+  button {
     width: fit-content;
   }
 }
@@ -47,19 +45,18 @@
 }
 
 .sidebar__files__file {
-  @include type.body-small;
+  @include type.body;
   border: none;
   background: tokens.$color-bg;
   text-align: left;
 
   &:hover {
-    background-color: tokens.$color-bg-hover; 
+    background-color: tokens.$color-bg-hover;
     cursor: pointer;
   }
 }
 
-
-.sidebar__files__file--active{
+.sidebar__files__file--active {
   background-color: tokens.$color-highlighted;
   font-weight: bold;
 }
