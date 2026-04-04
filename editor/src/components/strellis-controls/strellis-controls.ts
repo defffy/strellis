@@ -3,8 +3,6 @@ import { customElement, state, property } from "lit/decorators.js";
 import styles from "./strellis-controls.scss?inline";
 import type { StrellisEditor } from "../strellis-editor/strellis-editor";
 
-const TEMPLATE_OPTIONS = [{ name: "default", href: "/" }];
-
 /**
  * The controls component for Strellis editor.
  */

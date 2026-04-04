@@ -1,7 +1,6 @@
 import { LitElement, unsafeCSS, html } from "lit";
 import { customElement, state, property, query } from "lit/decorators.js";
 import styles from "./strellis-settings.scss?inline";
-import type { StrellisEditor } from "../strellis-editor/strellis-editor";
 
 const TEMPLATE_OPTIONS = [{ name: "default", href: "/" }];
 
@@ -121,7 +120,7 @@ export class StrellisSettings extends LitElement {
             class="template-selector-container__modal__options"
             @change=${this._chooseTemplate}
           >
-            ${TEMPLATE_OPTIONS.map(
+            ${TEMPLATE_OPTIONS?.map(
               (option) =>
                 html`<option value="/strellis${option.href}">
                   ${option.name}

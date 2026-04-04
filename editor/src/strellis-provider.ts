@@ -1,4 +1,4 @@
-import { LitElement, unsafeCSS, html, nothing } from "lit";
+import { LitElement, unsafeCSS, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import styles from "./strellis-provider.scss?inline";

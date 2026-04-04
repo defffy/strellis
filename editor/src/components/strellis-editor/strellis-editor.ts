@@ -33,9 +33,6 @@ export class StrellisEditor extends LitElement {
   vimModeEnabled: boolean = true;
 
   @state()
-  vimMode!: VimAdapterInstance;
-
-  @state()
   vimCompartment!: Compartment;
 
   connectedCallback() {
@@ -112,10 +109,6 @@ export class StrellisEditor extends LitElement {
 
   public getValue() {
     return this.editor.state.doc.toString();
-  }
-
-  public editorValue() {
-    return this.editor.getValue();
   }
 
   render() {
