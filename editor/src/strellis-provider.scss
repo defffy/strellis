@@ -25,19 +25,19 @@
 }
 
 .container__settings {
-  padding: tokens.$s-p-md;
+  padding-block: tokens.$s-p-md;
   position: absolute;
-  top: var(--controls-height);
-  right: 0;
-  height: calc(100% - var(--controls-height));
+  top: calc(var(--controls-height) + tokens.$s-md);
+  left: 50%;
+  height: 50%;
   width: 40%;
-  translate: 100% 0;
-  transition: translate 0.3s;
+  translate: -50%;
   z-index: 100;
+  display: none;
 }
 
 .container__settings--visible {
-  translate: 0 0;
+  display: block;
 }
 
 .container__editor {
