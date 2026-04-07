@@ -4,6 +4,16 @@ import styles from "./strellis-settings.scss?inline";
 
 const TEMPLATE_OPTIONS = [{ name: "default", href: "/" }];
 
+const STORAGE_KEYS = {
+  vimMode: "strellis-vim-mode",
+  sidebar: "strellis-sidebar",
+} as const;
+
+function loadBool(key: string, fallback: boolean): boolean {
+  const stored = localStorage.getItem(key);
+  return stored !== null ? stored === "true" : fallback;
+}
+
 /**
  * The controls component for Strellis editor.
  */
@@ -12,10 +22,10 @@ export class StrellisSettings extends LitElement {
   static styles = unsafeCSS(styles);
 
   @state()
-  vimModeEnabled = true;
+  vimModeEnabled = loadBool(STORAGE_KEYS.vimMode, true);
 
   @state()
-  sidebarEnabled = false;
+  sidebarEnabled = loadBool(STORAGE_KEYS.sidebar, false);
 
   @property()
   strudelRepl: any | null = null;
@@ -28,6 +38,15 @@ export class StrellisSettings extends LitElement {
 
   async connectedCallback() {
     super.connectedCallback();
+
+    // Dispatch initial events so the app syncs with stored settings
+    if (this.vimModeEnabled) {
+      this.dispatchEvent(new CustomEvent("toggle-vim-mode", { bubbles: true, composed: true }));
+    }
+    if (this.sidebarEnabled) {
+      this.dispatchEvent(new CustomEvent("toggle-sidebar", { bubbles: true, composed: true }));
+    }
+
     // Listen for key events to trigger run and stop actions
     window.addEventListener("keydown", async (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === "V") {
@@ -47,6 +66,7 @@ export class StrellisSettings extends LitElement {
       composed: true,
     });
     this.vimModeEnabled = !this.vimModeEnabled;
+    localStorage.setItem(STORAGE_KEYS.vimMode, String(this.vimModeEnabled));
     this.toggleVimCheckbox.checked = this.vimModeEnabled;
     this.dispatchEvent(toggleVimModeEvent);
   }
@@ -57,6 +77,7 @@ export class StrellisSettings extends LitElement {
       composed: true,
     });
     this.sidebarEnabled = !this.sidebarEnabled;
+    localStorage.setItem(STORAGE_KEYS.sidebar, String(this.sidebarEnabled));
     this.toggleSidebarCheckbox.checked = this.sidebarEnabled;
     this.dispatchEvent(toggleSidebarEvent);
   }
@@ -99,6 +120,7 @@ export class StrellisSettings extends LitElement {
             type="checkbox"
             id="toggle-sidebar"
             name="toggle-sidebar"
+            .checked=${this.sidebarEnabled}
             @change=${this._handleToggleSidebar}
           />
           <label for="toggle-sidebar"> Show sidebar (CTRL + SHIFT + b) </label>
@@ -109,6 +131,7 @@ export class StrellisSettings extends LitElement {
             type="checkbox"
             id="toggle-vim"
             name="toggle-vim"
+            .checked=${this.vimModeEnabled}
             @change=${this._handleToggleVim}
           />
           <label for="toggle-vim"> Enable Vim Mode (CTRL + SHIFT + v) </label>
