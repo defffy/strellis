@@ -30,7 +30,9 @@ export class StrellisEditor extends LitElement {
   selected: boolean = false;
 
   @state()
-  vimModeEnabled: boolean = true;
+  vimModeEnabled: boolean = localStorage.getItem("strellis-vim-mode") !== null
+    ? localStorage.getItem("strellis-vim-mode") === "true"
+    : true;
 
   @state()
   vimCompartment!: Compartment;
