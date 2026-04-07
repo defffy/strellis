@@ -3,8 +3,6 @@ import { customElement, state, property } from "lit/decorators.js";
 import styles from "./strellis-controls.scss?inline";
 import type { StrellisEditor } from "../strellis-editor/strellis-editor";
 
-const TEMPLATE_OPTIONS = [{ name: "default", href: "/" }];
-
 /**
  * The controls component for Strellis editor.
  */
@@ -12,14 +10,11 @@ const TEMPLATE_OPTIONS = [{ name: "default", href: "/" }];
 export class StrellisControls extends LitElement {
   static styles = unsafeCSS(styles);
 
-  @state()
-  vimModeEnabled = true;
-
-  @state()
-  sidebarEnabled = false;
-
   @property()
   strudelRepl: any | null = null;
+
+  @state()
+  playState: "running" | "stopped" = "stopped";
 
   async connectedCallback() {
     super.connectedCallback();
@@ -28,23 +23,15 @@ export class StrellisControls extends LitElement {
       // Ctrl+Enter to run code
       if (e.ctrlKey && e.key === "Enter") {
         e.preventDefault();
-        await this._handleRun();
+        await this._handlePlayState();
       }
 
       // Ctrl+S to stop code
-      if (e.ctrlKey && e.key === "s") {
+      // TODO: Pick a better keybinding that doesn't conflict with browser shortcuts
+      // or codemirror's default keybindings
+      if (e.ctrlKey && e.key === "/") {
         e.preventDefault();
-        this._handleStop();
-      }
-
-      if (e.ctrlKey && e.key === "V") {
-        e.preventDefault();
-        this._handleToggleVim();
-      }
-
-      if (e.ctrlKey && e.key === "B") {
-        e.preventDefault();
-        this._handleToggleSidebar();
+        this._handleToggleSettingsPanel();
       }
     });
   }
@@ -112,6 +99,16 @@ export class StrellisControls extends LitElement {
     this._disconnectStrudel();
   }
 
+  _handlePlayState() {
+    if (this.playState === "stopped") {
+      this._handleRun();
+      this.playState = "running";
+    } else if (this.playState === "running") {
+      this._handleStop();
+      this.playState = "stopped";
+    }
+  }
+
   async _handleExecuteStrudelCode() {
     // Function to execute Strudel code from editor
     const strudelEditor = document.querySelector(
@@ -146,61 +143,30 @@ export class StrellisControls extends LitElement {
     }
   }
 
-  _handleToggleVim() {
-    const toggleVimModeEvent = new CustomEvent("toggle-vim-mode", {
-      bubbles: true,
-      composed: true,
-    });
-    this.vimModeEnabled = !this.vimModeEnabled;
-    this.dispatchEvent(toggleVimModeEvent);
-  }
-
-  _handleToggleSidebar() {
-    const toggleSidebarEvent = new CustomEvent("toggle-sidebar", {
-      bubbles: true,
-      composed: true,
-    });
-    this.sidebarEnabled = !this.sidebarEnabled;
-    this.dispatchEvent(toggleSidebarEvent);
-  }
-
-  _handleChooseTemplate(e: Event) {
-    const url = (e.target as HTMLSelectElement).value;
-
-    const BASE_URL = window.location.origin + "/strellis/";
-
-    if (url) {
-      window.location.href = `${BASE_URL.replace(/\/$/, "")}/${url.replace(/^\//, "")}`;
-    }
+  _handleToggleSettingsPanel() {
+    this.dispatchEvent(
+      new CustomEvent("toggle-settings-panel", {
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   render() {
     return html`
       <div class="container">
-        <button @click=${this._handleRun}>Run (CTRL + Enter)</button>
-        <button @click=${this._handleStop}>Stop (CTRL + s)</button>
-        <button @click=${this._handleToggleSidebar}>
-          ${this.sidebarEnabled ? "Hide" : "Show"} sidebar (CTRL + SHIFT + b)
-        </button>
-        <button @click=${this._handleToggleVim}>
-          ${this.vimModeEnabled ? "Disable" : "Enable"} Vim Mode (CTRL + SHIFT +
-          v)
-        </button>
-        <div class="template-selector-container">
-          <button popovertarget="select-template">Select Template</button>
-          <div
-            id="select-template"
-            class="template-selector-container__modal"
-            popover
-          >
-            <h3>Choose a template:</h3>
-            <div class="template-selector-container__modal__options">
-              ${TEMPLATE_OPTIONS.map(
-                (option) =>
-                  html`<a href="/strellis${option.href}">${option.name}</a>`,
-              )}
-            </div>
-          </div>
+        <div class="container__branding">
+          <h1>Strellis Live</h1>
+        </div>
+        <div class="container__buttons">
+          <button @click=${this._handlePlayState}>
+            ${this.playState === "stopped"
+              ? "Run (CTRL + Enter)"
+              : "Stop (CTRL + s)"}
+          </button>
+          <button @click=${this._handleToggleSettingsPanel}>
+            Settings(CTRL + /)
+          </button>
         </div>
       </div>
     `;

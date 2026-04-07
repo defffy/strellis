@@ -1,0 +1,84 @@
+@use "@sass/utils/tokens";
+@use "@sass/utils/buttons";
+@use "@sass/utils/type";
+
+.container {
+  height: 100%;
+  width: 100%;
+  background: white;
+  border: 1px solid tokens.$color-border-dark;
+  padding: tokens.$s-p-md;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$s-md;
+
+  button {
+    @include buttons.button-small;
+    align-self: flex-start;
+  }
+}
+
+.container__checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: tokens.$s-sm;
+
+  label {
+    @include type.body-small;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: tokens.$border-width-medium solid tokens.$color-border-dark;
+    border-radius: tokens.$border-radius-thin;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transition: background-color 0.3s ease;
+
+    &:checked {
+      background-color: tokens.$color-border-dark;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 1px;
+        left: 4px;
+        width: 4px;
+        height: 8px;
+        border: solid tokens.$color-text-light;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    }
+
+    &:hover {
+      background-color: tokens.$color-bg-hover;
+    }
+  }
+}
+
+.template-selector-container {
+  h3 {
+    @include type.subheading-medium;
+    margin-bottom: tokens.$s-sm;
+  }
+
+  select {
+    @include type.body-extra-small;
+    border-radius: tokens.$border-radius-thin;
+    border: 1px solid tokens.$color-border-dark;
+    padding: tokens.$s-p-xs;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: tokens.$color-bg-hover;
+      color: tokens.$color-text-light;
+    }
+  }
+}

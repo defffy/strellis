@@ -13,12 +13,19 @@ export class StrellisProvider extends LitElement {
   @state()
   sidebarVisible = true;
 
+  @state()
+  settingsPanelVisible = false;
+
   connectedCallback(): void {
     super.connectedCallback();
 
     // Listen for custom events to toggle sidebar visibility
     this.addEventListener("toggle-sidebar", () => {
       this.sidebarVisible = !this.sidebarVisible;
+    });
+
+    this.addEventListener("toggle-settings-panel", () => {
+      this.settingsPanelVisible = !this.settingsPanelVisible;
     });
 
     window.addEventListener("STRUDEL_EVENT", ((event: CustomEvent) => {
@@ -43,6 +50,15 @@ export class StrellisProvider extends LitElement {
       >
         <div class="container__top">
           <slot name="controls"></slot>
+        </div>
+
+        <div
+          class=${classMap({
+            container__settings: true,
+            "container__settings--visible": this.settingsPanelVisible,
+          })}
+        >
+          <slot name="settings"></slot>
         </div>
 
         <div class="container__editor">

@@ -3,9 +3,21 @@
 @use "@sass/utils/type";
 
 .container {
-  width: calc(100% - 2rem);
-  margin: tokens.$s-p-md auto; 
+  padding: tokens.$s-p-md;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container__branding {
+  h1 {
+    margin: 0;
+  }
+}
+
+.container__buttons {
+  display: flex;
+  justify-content: flex-end;
   gap: tokens.$s-p-md;
 }
 
@@ -17,18 +29,16 @@ button {
   position: relative;
 }
 
-
 .template-selector-container__modal {
   border: 1px solid tokens.$color-border-dark;
   border-radius: tokens.$border-radius-thin;
   padding: tokens.$s-p-lg;
-    width: clamp(90%, 50vw, 400px);
+  width: clamp(90%, 50vw, 400px);
 
   h3 {
     @include type.subheading-medium;
     margin-bottom: tokens.$s-p-md;
   }
-
 }
 .template-selector-container__modal__options {
   display: flex;
@@ -46,5 +56,3 @@ button {
     }
   }
 }
-
-

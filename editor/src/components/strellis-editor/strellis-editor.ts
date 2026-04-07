@@ -30,10 +30,9 @@ export class StrellisEditor extends LitElement {
   selected: boolean = false;
 
   @state()
-  vimModeEnabled: boolean = true;
-
-  @state()
-  vimMode!: VimAdapterInstance;
+  vimModeEnabled: boolean = localStorage.getItem("strellis-vim-mode") !== null
+    ? localStorage.getItem("strellis-vim-mode") === "true"
+    : true;
 
   @state()
   vimCompartment!: Compartment;
@@ -112,10 +111,6 @@ export class StrellisEditor extends LitElement {
 
   public getValue() {
     return this.editor.state.doc.toString();
-  }
-
-  public editorValue() {
-    return this.editor.getValue();
   }
 
   render() {

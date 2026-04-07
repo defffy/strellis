@@ -1,12 +1,12 @@
 // Colors
-$color-primary: #007BFF;
+$color-primary: #007bff;
 $color-bg: #f0f0f0;
 // Dark grey
 $color-bg-hover: #777;
 $color-text-light: #fff;
 $color-border-dark: #333;
 
-$color-highlighted:  rgba(255, 255, 0);
+$color-highlighted: rgba(255, 255, 0);
 
 // Spacing
 $s-lg: 24px;
@@ -19,7 +19,6 @@ $s-p-lg: 20px;
 $s-p-md: 16px;
 $s-p-sm: 12px;
 $s-p-xs: 8px;
-
 
 // Borders
 $border-radius-thick: 8px;
@@ -35,5 +34,5 @@ $border-medium: $border-width-medium solid;
 $border-thin: $border-width-thin solid;
 
 // Fonts
-$font-family-primary: 'Inter', sans-serif;
-$font-family-secondary: 'Roboto Mono', monospace;
+$font-family-primary: "Inter", sans-serif;
+$font-family-secondary: "Roboto Mono", monospace;
