@@ -42,7 +42,7 @@ export class StrellisSidebar extends LitElement {
         this._goToPreviousFile();
       }
 
-      if (e.ctrlKey && e.key === "l") {
+      if (e.ctrlKey && e.key === "6") {
         e.preventDefault();
         this._goToLastOpenedFile();
       }
