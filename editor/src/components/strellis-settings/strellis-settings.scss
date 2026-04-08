@@ -82,3 +82,13 @@
     }
   }
 }
+
+.container__shortcuts-container__list {
+  padding: 0;
+  list-style: none;
+}
+
+.container__shortcuts-container__list__item
+  + .container__shortcuts-container__list__item {
+  margin-top: tokens.$s-xs;
+}

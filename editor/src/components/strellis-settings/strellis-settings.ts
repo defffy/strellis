@@ -9,6 +9,13 @@ const STORAGE_KEYS = {
   sidebar: "strellis-sidebar",
 } as const;
 
+const KEYBINDINGS = [
+  { action: "Run / Stop Code", keys: "CTRL + ENTER" },
+  { action: "Next File", keys: "CTRL + n" },
+  { action: "Previous File", keys: "CTRL + p" },
+  { action: "Last Opened File", keys: "CTRL + 6" },
+];
+
 function loadBool(key: string, fallback: boolean): boolean {
   const stored = localStorage.getItem(key);
   return stored !== null ? stored === "true" : fallback;
@@ -41,10 +48,14 @@ export class StrellisSettings extends LitElement {
 
     // Dispatch initial events so the app syncs with stored settings
     if (this.vimModeEnabled) {
-      this.dispatchEvent(new CustomEvent("toggle-vim-mode", { bubbles: true, composed: true }));
+      this.dispatchEvent(
+        new CustomEvent("toggle-vim-mode", { bubbles: true, composed: true }),
+      );
     }
     if (this.sidebarEnabled) {
-      this.dispatchEvent(new CustomEvent("toggle-sidebar", { bubbles: true, composed: true }));
+      this.dispatchEvent(
+        new CustomEvent("toggle-sidebar", { bubbles: true, composed: true }),
+      );
     }
 
     // Listen for key events to trigger run and stop actions
@@ -150,6 +161,18 @@ export class StrellisSettings extends LitElement {
                 </option>`,
             )}
           </select>
+        </div>
+
+        <div class="container__shortcuts-container">
+          <h3>Keyboard Shortcuts:</h3>
+          <ul class="container__shortcuts-container__list">
+            ${KEYBINDINGS.map(
+              (binding) =>
+                html`<li class="container__shortcuts-container__list__item">
+                  <strong>${binding.keys}:</strong> ${binding.action}
+                </li>`,
+            )}
+          </ul>
         </div>
       </div>
     `;
