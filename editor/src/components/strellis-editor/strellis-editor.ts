@@ -30,9 +30,10 @@ export class StrellisEditor extends LitElement {
   selected: boolean = false;
 
   @state()
-  vimModeEnabled: boolean = localStorage.getItem("strellis-vim-mode") !== null
-    ? localStorage.getItem("strellis-vim-mode") === "true"
-    : true;
+  vimModeEnabled: boolean =
+    localStorage.getItem("strellis-vim-mode") !== null
+      ? localStorage.getItem("strellis-vim-mode") === "true"
+      : true;
 
   @state()
   vimCompartment!: Compartment;
@@ -62,6 +63,10 @@ export class StrellisEditor extends LitElement {
 
       if (filename === this.getAttribute("filename")) {
         this._setHiddenStyles(false);
+        // If the editor is visible then we want to automatically focus it so that the user can start typing right away
+        setTimeout(() => {
+          this.editor.focus();
+        }, 0);
       } else {
         this._setHiddenStyles(true);
       }
