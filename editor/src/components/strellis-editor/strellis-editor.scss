@@ -40,6 +40,11 @@
   width: fit-content;
 }
 
+.cm-line.cm-activeLine {
+  background-color: black;
+  color: white;
+}
+
 .cm-vim-panel {
   border: 1px solid tokens.$color-border-dark;
 }
