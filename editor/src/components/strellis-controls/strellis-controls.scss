@@ -10,7 +10,12 @@
 }
 
 .container__branding {
+  background: tokens.$color-bg;
+  padding: tokens.$s-p-xs;
+  border: 1px solid tokens.$color-border-dark;
+
   h1 {
+    @include type.subheading-large;
     margin: 0;
   }
 }
