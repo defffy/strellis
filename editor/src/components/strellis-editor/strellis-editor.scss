@@ -41,10 +41,11 @@
 }
 
 .cm-line.cm-activeLine {
-  background-color: black;
+  background-color: #808e9b;
   color: white;
 }
 
 .cm-vim-panel {
-  border: 1px solid tokens.$color-border-dark;
+  background: black;
+  color: white;
 }
