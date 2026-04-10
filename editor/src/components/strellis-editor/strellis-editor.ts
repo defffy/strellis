@@ -80,8 +80,8 @@ export class StrellisEditor extends LitElement {
       doc: this.defaultValue,
       extensions: [
         minimalSetup,
-        lineNumbers(),
         highlightActiveLine(),
+        lineNumbers(),
         this.vimCompartment.of([]),
         javascript(),
       ],
