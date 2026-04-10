@@ -3,7 +3,7 @@ import { customElement, property, query, state } from "lit/decorators.js";
 import styles from "./strellis-editor.scss?inline";
 import { minimalSetup } from "codemirror";
 import { Compartment } from "@codemirror/state";
-import { lineNumbers, EditorView } from "@codemirror/view";
+import { lineNumbers, EditorView, highlightActiveLine } from "@codemirror/view";
 import { javascript } from "@codemirror/lang-javascript";
 import { vim } from "@replit/codemirror-vim";
 
@@ -81,6 +81,7 @@ export class StrellisEditor extends LitElement {
       extensions: [
         minimalSetup,
         lineNumbers(),
+        highlightActiveLine(),
         this.vimCompartment.of([]),
         javascript(),
       ],
