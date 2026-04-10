@@ -30,12 +30,12 @@
 }
 
 .cm-gutterElement {
-  background: rgba(black, 0.5);
+  background: black;
   color: tokens.$color-text-light;
 }
 
 .cm-line {
   // Darker yellow with some transparency for better visibility
-  background: rgba(tokens.$color-highlighted, 0.5);
+  background: tokens.$color-highlighted;
   width: fit-content;
 }
