@@ -8,6 +8,7 @@ function setup() {
    createCanvas(windowWidth, windowHeight);
    frameRate(20);
    angleMode(DEGREES);
+   background(0)
 }
 
 function draw() {
@@ -16,7 +17,7 @@ function draw() {
    }
 
    if (random(1) > 0.5) {
-      background(255);
+      background(0);
    }
 
    const bChars = strudelBData.s.split('');
@@ -41,7 +42,7 @@ function draw() {
          push();
          rectMode(CENTER);
          translate(x, y);
-         rect(0, 0, gridSize * map(bNoise, 0, 1, 0.4, 2), gridSize * map(bNoise, 0, 1, 0.4, 2));
+         rect(0, 0, gridSize, gridSize);
          pop();
 
       }
