@@ -114,7 +114,6 @@ let strudelMData = {};
 let strudelData = {};
 let colorPairs;
 
-const COLUMNS_COUNT = 8
 
 window.addEventListener(&quot;message&quot;, (event) =&gt; {
    if (event.data.type === &quot;STRUDEL_EVENT&quot;) {
@@ -131,109 +130,28 @@ window.addEventListener(&quot;message&quot;, (event) =&gt; {
 
 function setup() {
    createCanvas(windowWidth, windowHeight);
-
-   colorPairs = [
-      [color(&#39;#FC427B&#39;), color(&#39;#9AECDB&#39;)],
-      [color(&#39;#D6A2E8&#39;), color(&#39;#F8EFBA&#39;)],
-      [color(&#39;#55E6C1&#39;), color(&#39;#F97F51&#39;)],
-      [color(&#39;#1B9CFC&#39;), color(&#39;#CAD3C8&#39;)],
-      [color(&#39;#9AECDB&#39;), color(&#39;#EAB543&#39;)],
-      [color(&#39;#BDC581&#39;), color(&#39;#2C3A47&#39;)],
-      [color(&#39;#3B3B98&#39;), color(&#39;#6D214F&#39;)],
-      [color(&#39;#F8EFBA&#39;), color(&#39;#FEA47F&#39;)],
-   ]
 }
 
 function draw() {
-   const bNoise = map(getNoiseValueFromNote(strudelBData?.note), 0, 1, 0, random(200));
-   const mNoise = map(getNoiseValueFromNote(strudelMData?.note), 0, 1, random(100), random(255));
-
-   const colorTransition = map(sin(frameCount * 0.05 * bNoise), -1, 1, 0, 1);
-   const xTransition = map(sin((frameCount * 0.5 * mNoise)), -1, 1, 0, 1);
-
-   console.log(&#39;b&#39;, strudelBData)
-   console.log(&#39;m&#39;, strudelMData)
-
-   let colorIndex = 0;
-
-   for (let x = 0; x &lt; width; x += width / COLUMNS_COUNT) {
-      const palette = colorPairs[colorIndex];
-      const rectFill = lerpColor(palette[0], palette[1], colorTransition);
-      push();
-      noStroke();
-      rectFill.setAlpha(bNoise);
-      fill(rectFill);
-      let baseX = x;
-      const endX = x + 200;
-      const xVal = lerp(baseX, endX, xTransition);
-
-      translate(xVal, 0)
-
-      if (random(1) &gt; 0.5) {
-
-         rectMode(CENTER);
-      } else {
-         rectMode(CORNER);
-      }
-
-      scale(1 + bNoise * 0.01, 1 + mNoise * 0.01);
-      rect(0, 0, width / COLUMNS_COUNT, height);
-      pop();
-
-      colorIndex++;
+   if (!strudelBData.s) {
+      return;
    }
+
+   const [bInt1, bInt2] = getSoundValues(strudelBData.s);
+   const bNoise = noise(bInt1, bInt2, strudelBData.cutoff);
+
+   console.log(bNoise);
 }
 
-/**
-* This helper function takes a note and converts it to a noise value.
-* If the note is a number, it simply returns the noise value with that number.
-* If the note is a string (like &quot;C4&quot;), it splits the note into its name and octave, 
-* converts the name to a numerical value, and then returns the noise value based on those parameters.
-*/
-function getNoiseValueFromNote(note) {
-   if (!note) {
-      return 1;
-   }
-
-   if (typeof note === &#39;number&#39;) {
-      return noise(note)
-   }
-
-
-   // Split the note at the number 
-   const noteParts = note.match(/([a-gA-G#b]+)(&#92;d+)/);
-
-   const name = noteParts[1];
-   const octave = noteParts[2];
-
-   const nameValues = name?.split(&#39;&#39;).map(letter =&gt; {
-      const letterPos = letter.charCodeAt(0) - 64;
-      return letterPos
-   }
-   );
-
-
-   if (!octave &amp;&amp; nameValues?.length === 0) {
-      return noise(random(100), random(100));
-   }
-
-   if (nameValues?.length === 0) {
-      return noise(random(100), octave);
-   }
-
-   if (!octave) {
-      return noise(nameValues[0], random(100));
-   }
-
-   if (nameValues?.length &gt; 1) {
-      return noise(nameValues[0], nameValues[1], octave);
-   } else {
-      return noise(nameValues[0], octave);
-   }
+function getInt(str) {
+   return str.charCodeAt(0);
 }
 
-
-"></strellis-editor>
+function getSoundValues(str) {
+   return str.split(&#39;&#39;).map(note =&gt; {
+      return getInt(note);
+   })
+}"></strellis-editor>
     
 
     <strellis-console slot="console"></strellis-console>
