@@ -1,73 +1,47 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>editor</title>
-    <link rel="stylesheet" href="/src/sass/styles.scss" />
-    <script src="https://unpkg.com/@strudel/repl@latest"></script>
-    <script type="module" src="/src/strellis-provider.ts"></script>
-    <script
-      type="module"
-      src="/src/components/strellis-sidebar/strellis-sidebar.ts"
-    ></script>
-    <script
-      type="module"
-      src="/src/components/strellis-controls/strellis-controls.ts"
-    ></script>
-    <script
-      type="module"
-      src="/src/components/strellis-console/strellis-console.ts"
-    ></script>
-    <script
-      type="module"
-      src="/src/components/strellis-display-panel/strellis-display-panel.ts"
-    ></script>
-    <script
-      type="module"
-      src="/src/components/strellis-editor/strellis-editor.ts"
-    ></script>
-  </head>
 
-  <body>
-    <strellis-provider>
-      <strellis-controls slot="controls"></strellis-controls>
-      <strellis-sidebar slot="sidebar"></strellis-sidebar>
-      <strellis-display-panel slot="display-panel">
-        <iframe
-          slot="display"
-          frameborder="0"
-          allow="midi; accelerometer; gyroscope; magnetometer"
-          sandbox="allow-scripts allow-modals allow-pointer-lock"
-        >
-        </iframe>
-      </strellis-display-panel>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>editor</title>
+  <link rel="stylesheet" href="/src/sass/styles.scss" />
+  <script src="https://unpkg.com/@strudel/repl@latest"></script>
+  <script type="module" src="/src/strellis-provider.ts"></script>
+  <script type="module" src="/src/components/strellis-sidebar/strellis-sidebar.ts"></script>
+  <script type="module" src="/src/components/strellis-controls/strellis-controls.ts"></script>
+  <script type="module" src="/src/components/strellis-console/strellis-console.ts"></script>
+  <script type="module" src="/src/components/strellis-display-panel/strellis-display-panel.ts"></script>
+  <script type="module" src="/src/components/strellis-editor/strellis-editor.ts"></script>
+</head>
 
-      <strellis-editor
-        slot="editor"
-        language="html"
-        filename="index.html"
-        default-value='&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
+<body>
+  <strellis-provider>
+    <strellis-controls slot="controls"></strellis-controls>
+    <strellis-sidebar slot="sidebar"></strellis-sidebar>
+    <strellis-display-panel slot="display-panel">
+      <iframe slot="display" frameborder="0" allow="midi; accelerometer; gyroscope; magnetometer"
+        sandbox="allow-scripts allow-modals allow-pointer-lock">
+      </iframe>
+    </strellis-display-panel>
+
+    
+    <strellis-editor slot="editor"  language="html" filename="index.html" default-value="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
 &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
     &lt;title&gt;Strellis Editor&lt;/title&gt;
-    &lt;link rel="stylesheet" href="styles.css"&gt;
-    &lt;script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.js" crossorigin=""&gt;&lt;/script&gt;
-    &lt;script src="sketch.js"&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.js&quot; crossorigin=&quot;&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;sketch.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-'
-      ></strellis-editor>
-
-      <strellis-editor
-        slot="editor"
-        language="css"
-        filename="styles.css"
-        default-value="/* http://meyerweb.com/eric/tools/css/reset/ 
+"></strellis-editor>
+    
+    <strellis-editor slot="editor"  language="css" filename="styles.css" default-value="/* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -115,15 +89,9 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-"
-      ></strellis-editor>
-
-      <strellis-editor
-        slot="editor"
-        selected="true"
-        language="javascript"
-        filename="strudel.js"
-        default-value='Pattern.prototype.emit = function (eventName) {
+"></strellis-editor>
+    
+    <strellis-editor slot="editor" selected="true" language="javascript" filename="strudel.js" default-value="Pattern.prototype.emit = function (eventName) {
   return this.log(function (hap) {
     window.dispatchEvent(new CustomEvent(&#39;STRUDEL_EVENT&#39;, {
       detail: {
@@ -138,60 +106,113 @@ table {
   })
 }
 
-s("[bd]*4").gain(0.5).lpf(300).emit(&#39;STRUDEL_B&#39;);'
-      ></strellis-editor>
+samples(&#39;github:switchangel/pad&#39;)
+samples(&#39;github:tidalcycles/dirt-samples&#39;)
+samples(&#39;shabda/speech/en-US/m:this,set,is,done,yes,ah&#39;)
 
-      <strellis-editor
-        slot="editor"
-        language="javascript"
-        filename="sketch.js"
-        default-value='// Listen for messages from the Strudel instance 
+
+stack(
+ s(&quot;swpad:10&quot;).scrub(&quot;{0.1!2 .25@3 0.7!2 &lt;0.8:1.5&gt;}%8&quot;).emit(&#39;M&#39;), 
+  s(&quot;[bd]*4&quot;).gain(0.5).lpf(300).emit(&#39;B&#39;)
+)
+
+// Finish
+// s(&quot;this set is done yes ah&quot;).slow(1.5)"></strellis-editor>
+    
+    <strellis-editor slot="editor"  language="javascript" filename="sketch.js" default-value="// Listen for messages from the Strudel instance 
 let strudelBData = {};
 let strudelMData = {};
 let strudelData = {};
+let strudelPData = {};
+
 let colorPairs;
 
-
-window.addEventListener("message", (event) =&gt; {
-   if (event.data.type === "STRUDEL_EVENT") {
-      if (event.data.eventName === &#39;STRUDEL_B&#39;) {
+window.addEventListener(&quot;message&quot;, (event) =&gt; {
+   if (event.data.type === &quot;STRUDEL_EVENT&quot;) {
+      if (event.data.eventName === &#39;B&#39;) {
          strudelBData = event.data.value;
-      } else if (event.data.eventName === &#39;STRUDEL_M&#39;) {
+      } else if (event.data.eventName === &#39;M&#39;) {
          strudelMData = event.data.value;
-      } else {
-
-         strudelData = event.data.value;
+      } else if (event.data.eventName === &#39;P&#39;) {
+         strudelPData = event.data.value;
       }
    }
 });
 
+const ts = Date.now(); // e.g. 1744393200000
+
+function tsToSeed(ts) {
+   let h = ts ^ (ts &gt;&gt;&gt; 16);        // XOR with right-shifted self
+   h = Math.imul(h, 0x45d9f3b);    // multiply by a mixing constant
+   h = h ^ (h &gt;&gt;&gt; 16);             // XOR again
+   return (h &gt;&gt;&gt; 0);               // force to unsigned 32-bit integer
+}
+
+function mulberry32(seed) {
+   let s = seed &gt;&gt;&gt; 0;
+   return () =&gt; {
+      s |= 0; s = s + 0x6D2B79F5 | 0;
+      let t = Math.imul(s ^ s &gt;&gt;&gt; 15, 1 | s);
+      t = t + Math.imul(t ^ t &gt;&gt;&gt; 7, 61 | t) ^ t;
+      return ((t ^ t &gt;&gt;&gt; 14) &gt;&gt;&gt; 0) / 4294967296; // returns 0.0–1.0
+   };
+}
+
+const rng = mulberry32(tsToSeed(Date.now()));
+
 function setup() {
    createCanvas(windowWidth, windowHeight);
+   frameRate(20);
+   noiseSeed(rng());
+   randomSeed(rng());
+   angleMode(DEGREES);
 }
 
 function draw() {
    if (!strudelBData.s) {
-      return;
+      return
    }
 
-   const [bInt1, bInt2] = getSoundValues(strudelBData.s);
-   const bNoise = noise(bInt1, bInt2, strudelBData.cutoff);
+   if (random(1) &gt; 0.5) {
+      background(255);
+   }
 
-   console.log(bNoise);
+   const bChars = strudelBData.s.split(&#39;&#39;);
+   const bNoise = noise(getInt(bChars[0]), getInt(bChars[1]), strudelBData.cutoff);
+   const mNoise = noise(strudelMData.duration, strudelMData.gain, strudelMData.room);
+
+
+   const bv = map(bNoise, 0, 1, -100, 100);
+   const mv = map(mNoise, 0, 1, -100, 100);
+
+   const gridSize = 50;
+   const cols = width / gridSize;
+   const rows = height / gridSize;
+
+
+
+   for (let i = 0; i &lt; cols; i++) {
+      for (let j = 0; j &lt; rows; j++) {
+         const x = i * gridSize;
+         const y = j * gridSize;
+
+         push();
+         rectMode(CENTER);
+         translate(x, y);
+         rect(0, 0, gridSize * map(bNoise, 0, 1, 0.4, 2), gridSize * map(bNoise, 0, 1, 0.4, 2));
+         pop();
+
+      }
+   }
 }
 
 function getInt(str) {
    return str.charCodeAt(0);
-}
+}"></strellis-editor>
+    
 
-function getSoundValues(str) {
-   return str.split(&#39;&#39;).map(note =&gt; {
-      return getInt(note);
-   })
-}'
-      ></strellis-editor>
+    <strellis-console slot="console"></strellis-console>
+  </strellis-provider>
+</body>
 
-      <strellis-console slot="console"></strellis-console>
-    </strellis-provider>
-  </body>
 </html>
