@@ -1,47 +1,73 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>editor</title>
+    <link rel="stylesheet" href="/src/sass/styles.scss" />
+    <script src="https://unpkg.com/@strudel/repl@latest"></script>
+    <script type="module" src="/src/strellis-provider.ts"></script>
+    <script
+      type="module"
+      src="/src/components/strellis-sidebar/strellis-sidebar.ts"
+    ></script>
+    <script
+      type="module"
+      src="/src/components/strellis-controls/strellis-controls.ts"
+    ></script>
+    <script
+      type="module"
+      src="/src/components/strellis-console/strellis-console.ts"
+    ></script>
+    <script
+      type="module"
+      src="/src/components/strellis-display-panel/strellis-display-panel.ts"
+    ></script>
+    <script
+      type="module"
+      src="/src/components/strellis-editor/strellis-editor.ts"
+    ></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>editor</title>
-  <link rel="stylesheet" href="/src/styles.css" />
-  <script src="https://unpkg.com/@strudel/repl@latest"></script>
-  <script type="module" src="/src/strellis-provider.ts"></script>
-  <script type="module" src="/src/components/strellis-sidebar/strellis-sidebar.ts"></script>
-  <script type="module" src="/src/components/strellis-controls/strellis-controls.ts"></script>
-  <script type="module" src="/src/components/strellis-console/strellis-console.ts"></script>
-  <script type="module" src="/src/components/strellis-display-panel/strellis-display-panel.ts"></script>
-  <script type="module" src="/src/components/strellis-editor/strellis-editor.ts"></script>
-</head>
+  <body>
+    <strellis-provider>
+      <strellis-controls slot="controls"></strellis-controls>
+      <strellis-sidebar slot="sidebar"></strellis-sidebar>
+      <strellis-display-panel slot="display-panel">
+        <iframe
+          slot="display"
+          frameborder="0"
+          allow="midi; accelerometer; gyroscope; magnetometer"
+          sandbox="allow-scripts allow-modals allow-pointer-lock"
+        >
+        </iframe>
+      </strellis-display-panel>
 
-<body>
-  <strellis-provider>
-    <strellis-controls slot="controls"></strellis-controls>
-    <strellis-sidebar slot="sidebar"></strellis-sidebar>
-    <strellis-display-panel slot="display-panel">
-      <iframe slot="display" frameborder="0" allow="midi; accelerometer; gyroscope; magnetometer"
-        sandbox="allow-scripts allow-modals allow-pointer-lock">
-      </iframe>
-    </strellis-display-panel>
-
-    
-    <strellis-editor slot="editor"  language="html" filename="index.html" default-value="&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
+      <strellis-editor
+        slot="editor"
+        language="html"
+        filename="index.html"
+        default-value='&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
 &lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
     &lt;title&gt;Strellis Editor&lt;/title&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;styles.css&quot;&gt;
-    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.js&quot; crossorigin=&quot;&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;sketch.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="styles.css"&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.js" crossorigin=""&gt;&lt;/script&gt;
+    &lt;script src="sketch.js"&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-"></strellis-editor>
-    
-    <strellis-editor slot="editor"  language="css" filename="styles.css" default-value="/* http://meyerweb.com/eric/tools/css/reset/ 
+'
+      ></strellis-editor>
+
+      <strellis-editor
+        slot="editor"
+        language="css"
+        filename="styles.css"
+        default-value="/* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -89,9 +115,15 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-"></strellis-editor>
-    
-    <strellis-editor slot="editor" selected="true" language="javascript" filename="strudel.js" default-value="Pattern.prototype.emit = function (eventName) {
+"
+      ></strellis-editor>
+
+      <strellis-editor
+        slot="editor"
+        selected="true"
+        language="javascript"
+        filename="strudel.js"
+        default-value='Pattern.prototype.emit = function (eventName) {
   return this.log(function (hap) {
     window.dispatchEvent(new CustomEvent(&#39;STRUDEL_EVENT&#39;, {
       detail: {
@@ -106,17 +138,22 @@ table {
   })
 }
 
-s(&quot;[bd]*4&quot;).gain(0.5).lpf(300).emit(&#39;STRUDEL_B&#39;);"></strellis-editor>
-    
-    <strellis-editor slot="editor"  language="javascript" filename="sketch.js" default-value="// Listen for messages from the Strudel instance 
+s("[bd]*4").gain(0.5).lpf(300).emit(&#39;STRUDEL_B&#39;);'
+      ></strellis-editor>
+
+      <strellis-editor
+        slot="editor"
+        language="javascript"
+        filename="sketch.js"
+        default-value='// Listen for messages from the Strudel instance 
 let strudelBData = {};
 let strudelMData = {};
 let strudelData = {};
 let colorPairs;
 
 
-window.addEventListener(&quot;message&quot;, (event) =&gt; {
-   if (event.data.type === &quot;STRUDEL_EVENT&quot;) {
+window.addEventListener("message", (event) =&gt; {
+   if (event.data.type === "STRUDEL_EVENT") {
       if (event.data.eventName === &#39;STRUDEL_B&#39;) {
          strudelBData = event.data.value;
       } else if (event.data.eventName === &#39;STRUDEL_M&#39;) {
@@ -151,11 +188,10 @@ function getSoundValues(str) {
    return str.split(&#39;&#39;).map(note =&gt; {
       return getInt(note);
    })
-}"></strellis-editor>
-    
+}'
+      ></strellis-editor>
 
-    <strellis-console slot="console"></strellis-console>
-  </strellis-provider>
-</body>
-
+      <strellis-console slot="console"></strellis-console>
+    </strellis-provider>
+  </body>
 </html>
