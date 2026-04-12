@@ -13,4 +13,7 @@ Pattern.prototype.emit = function (eventName) {
   })
 }
 
+samples('github:switchangel/pad')
+samples('github:tidalcycles/dirt-samples')
+
 s("[bd]*4").gain(0.5).lpf(300).emit('STRUDEL_B');
