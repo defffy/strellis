@@ -34,7 +34,7 @@ export class StrellisProvider extends LitElement {
       const { val, eventName } = event.detail;
 
       displayIframe?.contentWindow?.postMessage(
-        { type: "STRUDEL_EVENT", value: val.value, eventName },
+        { type: "STRUDEL_EVENT", value: val, eventName },
         "*",
       );
     }) as EventListener);
